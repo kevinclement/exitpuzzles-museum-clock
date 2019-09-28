@@ -4,15 +4,13 @@
 
 class Logic;
 
-class LightSensor {
+class Encoder {
   public:
-    LightSensor(Logic &logic);
+    Encoder(Logic &logic);
     void setup();
     void handle();
 
-    bool lightDetected = true;
-    int light_value = 0;
-
   private:
     Logic &_logic;
+    
 };

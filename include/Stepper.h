@@ -10,13 +10,6 @@ class Stepper {
     void setup();
     void handle();
 
-    void open();
-    void close();
-
-    void back();
-    void forward();
-    
-    bool tray_out = false;
   private:
     Logic &_logic;
     
