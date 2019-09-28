@@ -6,16 +6,17 @@ Logic::Logic()
   : serial(),
     stepmotor(*this),
     encoder(*this),
-    wifi(*this)
+    wifi(*this),
+    magnet(*this)
 {
 }
 
 void Logic::setup() {
   serial.setup("ExitClock");
-
   encoder.setup();
   stepmotor.setup();
   wifi.setup();
+  magnet.setup();
 }
 
 void Logic::solved() {
@@ -25,6 +26,7 @@ void Logic::solved() {
 
 void Logic::handle() {
   serial.handle();
+  magnet.handle();
   wifi.handle();
   encoder.handle();
   stepmotor.handle();

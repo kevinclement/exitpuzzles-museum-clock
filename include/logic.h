@@ -4,6 +4,7 @@
 #include "Stepper.h"
 #include "Encoder.h"
 #include "WifiUpdate.h"
+#include "Magnet.h"
 
 class Logic {
 public:
@@ -12,6 +13,7 @@ public:
   Stepper stepmotor;
   Encoder encoder;
   WifiUpdate wifi;
+  Magnet magnet;
 
   void setup();
   void handle();
