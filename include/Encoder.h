@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Arduino.h"
+#include <ESP32Encoder.h>
 
 class Logic;
 

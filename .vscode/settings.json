@@ -6,5 +6,8 @@
     "terminal.integrated.env.osx": {
         "PATH": "/Users/kevinclement/.platformio/penv/bin:/Users/kevinclement/.platformio/penv:/Users/kevinclement/.yarn/bin:/Users/kevinclement/.config/yarn/global/node_modules/.bin:/Users/kevinclement/.platformio/penv/bin:/Users/kevinclement/bin:/Users/kevinclement/.nvm/versions/node/v11.11.0/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/share/dotnet:/opt/X11/bin:~/.dotnet/tools::/Users/kevinclement/esp/xtensa-esp32-elf/bin",
         "PLATFORMIO_CALLER": "vscode"
+    },
+    "files.associations": {
+        "orig": "cpp"
     }
 }
