@@ -2,12 +2,6 @@
 #include "logic.h"
 #include "consts.h"
 
-#define RESET_TIME 180000      // 3 minutes
-
-bool SOLVED = false;
-bool SOLVED_TRAY_IN = false;
-unsigned long solved_at = 0;
-
 Logic::Logic() 
   : serial(),
     stepmotor(*this),
@@ -17,7 +11,7 @@ Logic::Logic()
 }
 
 void Logic::setup() {
-  serial.setup("ExitMuseumBirdcage");
+  serial.setup("ExitClock");
 
   encoder.setup();
   stepmotor.setup();
@@ -26,7 +20,6 @@ void Logic::setup() {
 
 void Logic::solved() {
   serial.print("Solved!\n");
-
   status();
 }
 

@@ -17,14 +17,8 @@ void WifiUpdate::setup() {
   WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);
 
-  while (WiFi.waitForConnectResult() != WL_CONNECTED) {
-    Serial.println("Connection Failed!");
-    // delay(5000);
-    // ESP.restart();
-  }
-
   // setup wifi updates
-  ArduinoOTA.setHostname("museum-bird");
+  ArduinoOTA.setHostname("museum-clock");
   ArduinoOTA
     .onStart([]() {
       Serial.println("Start updating...");
