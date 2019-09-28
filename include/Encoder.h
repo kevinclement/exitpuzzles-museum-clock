@@ -11,7 +11,13 @@ class Encoder {
     void setup();
     void handle();
 
+    int HOUR = 0;
+    int MINUTE = 0;
+
   private:
     Logic &_logic;
+
+    void setHour(int);
+    void setMinute(int);
     
 };

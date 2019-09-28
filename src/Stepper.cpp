@@ -8,9 +8,6 @@
 #define MINUTE_DIR_PIN    27
 #define MINUTE_STEP_PIN   33
 
-#define RESOLUTION        2
-#define STEPS             200
-
 AccelStepper stepperHour(1, HOUR_STEP_PIN, HOUR_DIR_PIN);
 AccelStepper stepperMinute(1, MINUTE_STEP_PIN, MINUTE_DIR_PIN);
 
@@ -31,4 +28,12 @@ void Stepper::setup() {
 
 void Stepper::handle() {
   digitalWrite(ENABLE_PIN, _enabled ? LOW : HIGH);
+
+  stepperHour.moveTo(hour_stepper);
+  stepperHour.setSpeed(100);
+  stepperHour.runSpeedToPosition();
+
+  stepperMinute.moveTo(minute_stepper);
+  stepperMinute.setSpeed(100);
+  stepperMinute.runSpeedToPosition();
 }

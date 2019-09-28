@@ -10,6 +10,8 @@ class Magnet {
     void setup();
     void handle();
 
+    bool _enabled = true;
+
   private:
     Logic &_logic;
     

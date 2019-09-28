@@ -14,4 +14,5 @@ void Magnet::setup() {
 }
 
 void Magnet::handle() {
+  digitalWrite(LOCK_PIN, _enabled ? HIGH : LOW);
 }

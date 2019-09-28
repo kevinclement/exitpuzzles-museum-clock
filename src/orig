@@ -67,52 +67,8 @@ void printStatus() {
   p("locked: %s%s", LOCKED ? "true" : "false", CRLF);
 }
 
-void setHour(int hourPos) {
-  HOUR_STEPPER = hourPos / RESOLUTION;
-  int posHour = -posToTime(hourPos, 12);
-
-  HOUR = posHour + STORED_HOUR;
-  if (HOUR < 0) {
-    HOUR += 12;
-  } else if (HOUR >= 12) {
-    HOUR -= 12;
-  }
- 
-  printStatus();
-    
-  EEPROM.put(HOUR_ADDR, HOUR);
-  EEPROM.put(HOUR_STEPPER_ADDR, HOUR_STEPPER);
-  EEPROM.commit();
-}
-
-void setMinute(int minutePos) {
-  MINUTE_STEPPER = minutePos / RESOLUTION;
-  int posMinute = -posToTime(minutePos, 60);
-  
-  MINUTE = posMinute + STORED_MINUTE;
-  if (MINUTE < 0) {
-    MINUTE += 60;
-  } else if (MINUTE >= 60) {
-    MINUTE -= 60;
-  }
-
-  printStatus();
-    
-  EEPROM.put(MINUTE_ADDR, MINUTE);
-  EEPROM.put(MINUTE_STEPPER_ADDR, MINUTE_STEPPER);
-  EEPROM.commit();
-}
-
 int timeToPos(int t, double denom) {
   return -(t * (STEPS / denom));
-}
-
-int posToTime(int p, int denom) {
-  if (p > (STEPS * RESOLUTION)) {
-    p %= (STEPS * RESOLUTION);
-  } 
-
-  return (int)(round(( p / (float)RESOLUTION / STEPS ) * denom)) % denom;  
 }
 
 bool solved() {
@@ -169,12 +125,6 @@ void loop(){
     LOCKED = true;
   }
 
-  // if motors disabled, turn off
-  digitalWrite(ENABLE_PIN, ENABLED ? LOW : HIGH);
-
-  // handle lock/unlock motor
-  digitalWrite(LOCK_PIN, LOCKED ? HIGH : LOW);
-
   // check if we are zeroing out steppers
   if (zeroing > 0 && (millis() - zeroing > 50) && stepperHour.distanceToGo() == 0 && stepperMinute.distanceToGo() == 0) {
     p("  DONE. Resetting all variables.%s", CRLF);
@@ -187,30 +137,6 @@ void loop(){
     ENABLED = true;
   }
 
-  // move steppers
-  stepperHour.moveTo(HOUR_STEPPER);
-  stepperHour.setSpeed(100);
-  stepperHour.runSpeedToPosition();
 
-  stepperMinute.moveTo(MINUTE_STEPPER);
-  stepperMinute.setSpeed(100);
-  stepperMinute.runSpeedToPosition();
 
-  int newHourPos = hour.getCount();
-  if (newHourPos != hourPos) {    
-    if (millis() - lastHour > ENCODER_DEBOUNCE) {
-      setHour(newHourPos);
-    }
-    lastHour = millis();
-    hourPos = newHourPos;
-  }
-
-  int newMinutePos =  minute.getCount();
-  if (newMinutePos != minutePos) {
-    if (millis() - lastMinute > ENCODER_DEBOUNCE) {
-      setMinute(newMinutePos);
-    }
-    lastMinute = millis();
-    minutePos = newMinutePos;
-  }
 }
