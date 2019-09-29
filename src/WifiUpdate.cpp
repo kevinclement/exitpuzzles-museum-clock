@@ -12,9 +12,16 @@ WifiUpdate::WifiUpdate(Logic &logic)
 {  
 }
 
+void WiFiStationConnected(WiFiEvent_t event, WiFiEventInfo_t info)
+{
+  Serial.println("Connected to wifi!");
+  ArduinoOTA.begin();
+}
+
 void WifiUpdate::setup() {
   
   WiFi.mode(WIFI_STA);
+  WiFi.onEvent(WiFiStationConnected, SYSTEM_EVENT_STA_CONNECTED);
   WiFi.begin(ssid, password);
 
   // setup wifi updates
@@ -37,8 +44,6 @@ void WifiUpdate::setup() {
       else if (error == OTA_RECEIVE_ERROR) Serial.println("Receive Failed");
       else if (error == OTA_END_ERROR)     Serial.println("End Failed");
     });
-
-  ArduinoOTA.begin();
 }
 
 void WifiUpdate::handle() {
