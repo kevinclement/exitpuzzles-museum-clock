@@ -4,8 +4,6 @@
 
 Logic::Logic() 
   : serial(),
-    stepmotor(*this),
-    encoder(*this),
     wifi(*this),
     magnet(*this),
     hourSensor(*this, 11, "HOUR"),     // TODO: proper pin
@@ -18,8 +16,6 @@ void Logic::setup() {
   minuteSensor.setup();
   hourSensor.setup();
 
-  encoder.setup();
-  stepmotor.setup();
   wifi.setup();
   magnet.setup();
 }
@@ -32,13 +28,10 @@ void Logic::solved() {
 
 void Logic::handle() {
   serial.handle();
+  wifi.handle();
   minuteSensor.handle();
   hourSensor.handle();
-
   magnet.handle();
-  wifi.handle();
-  encoder.handle();
-  stepmotor.handle();
 
   if (hourSensor.solved != _hs || minuteSensor.solved != _ms) {
     _hs = hourSensor.solved;

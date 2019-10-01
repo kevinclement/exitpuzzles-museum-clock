@@ -23,6 +23,7 @@ void fakeHour(int) {
   logic.serial.print("faking hour sensor...%s", CRLF);
   logic.hourSensor.fake();
 }
+
 void fakeMinute(int) {
   logic.serial.print("faking minute sensor...%s", CRLF);
   logic.minuteSensor.fake();

@@ -1,8 +1,6 @@
 #pragma once
 
 #include "SerialManager.h"
-#include "Stepper.h"
-#include "Encoder.h"
 #include "WifiUpdate.h"
 #include "Magnet.h"
 #include "HallSensor.h"
@@ -11,8 +9,6 @@ class Logic {
 public:
   Logic();
   SerialManager serial;  
-  Stepper stepmotor;
-  Encoder encoder;
   WifiUpdate wifi;
   Magnet magnet;
   HallSensor hourSensor;
