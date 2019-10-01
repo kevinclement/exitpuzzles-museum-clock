@@ -19,14 +19,26 @@ void solve(int) {
   logic.solved();
 }
 
+void fakeHour(int) {
+  logic.serial.print("faking hour sensor...%s", CRLF);
+  logic.hourSensor.fake();
+}
+void fakeMinute(int) {
+  logic.serial.print("faking minute sensor...%s", CRLF);
+  logic.minuteSensor.fake();
+}
+
 void setup() {  
   logic.setup();
   logic.serial.print("Museum Grandfather clock by kevinc...\n");
   Serial.println(getFullVersion("museum-clock"));
 
-  logic.serial.registerCommand(SerialCommand("status",  's', &status,     "status",   "gets the status of device"));
-  logic.serial.registerCommand(SerialCommand("solve",   'v', &solve,      "solve",   "force a puzzle solve of the device"));
-  logic.serial.registerCommand(SerialCommand("reboot",  'r', &reboot,     "reboot",  "software reboot the device"));
+  logic.serial.registerCommand(SerialCommand("status",   's', &status,     "status",   "gets the status of device"));
+  logic.serial.registerCommand(SerialCommand("solve",    'v', &solve,      "solve",   "force a puzzle solve of the device"));
+  logic.serial.registerCommand(SerialCommand("reboot",   'r', &reboot,     "reboot",  "software reboot the device"));
+
+  logic.serial.registerCommand(SerialCommand("fakehour",   'h', &fakeHour,   "fakehour",   "fake the hour sensor. toggles on and off"));
+  logic.serial.registerCommand(SerialCommand("fakeminute", 'm', &fakeMinute, "fakeminute", "fake the minute sensor. toggles on and off"));
 
   logic.serial.printHelp();
   logic.status();

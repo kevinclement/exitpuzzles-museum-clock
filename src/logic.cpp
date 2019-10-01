@@ -8,13 +8,15 @@ Logic::Logic()
     encoder(*this),
     wifi(*this),
     magnet(*this),
-    hourSensor(*this, 11),   // TODO: proper pin
-    minuteSensor(*this, 12)  // TODO: proper pin
+    hourSensor(*this, 11, "HOUR"),     // TODO: proper pin
+    minuteSensor(*this, 12, "MINUTE")  // TODO: proper pin
 {
 }
 
 void Logic::setup() {
   serial.setup("ExitMuseumClock");
+  minuteSensor.setup();
+  hourSensor.setup();
   encoder.setup();
   stepmotor.setup();
   wifi.setup();
@@ -33,6 +35,8 @@ void Logic::handle() {
   encoder.handle();
   stepmotor.handle();
 
+  minuteSensor.handle();
+  hourSensor.handle();
 }
 
 void Logic::status() {
