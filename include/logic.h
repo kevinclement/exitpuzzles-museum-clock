@@ -5,6 +5,7 @@
 #include "Encoder.h"
 #include "WifiUpdate.h"
 #include "Magnet.h"
+#include "HallSensor.h"
 
 class Logic {
 public:
@@ -14,6 +15,8 @@ public:
   Encoder encoder;
   WifiUpdate wifi;
   Magnet magnet;
+  HallSensor hourSensor;
+  HallSensor minuteSensor;
 
   void setup();
   void handle();
