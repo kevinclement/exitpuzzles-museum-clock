@@ -6,7 +6,7 @@ Logic::Logic()
   : serial(),
     wifi(*this),
     magnet(*this),
-    hourSensor(*this, 11, "HOUR"),     // TODO: proper pin
+    hourSensor(*this,   11, "HOUR"),   // TODO: proper pin
     minuteSensor(*this, 12, "MINUTE")  // TODO: proper pin
 {
 }
@@ -23,6 +23,7 @@ void Logic::setup() {
 void Logic::solved() {
   serial.print("Solved!\n");
   _solved = true;
+  magnet._enabled = false;
   status();
 }
 

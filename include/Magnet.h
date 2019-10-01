@@ -14,5 +14,4 @@ class Magnet {
 
   private:
     Logic &_logic;
-    
 };
