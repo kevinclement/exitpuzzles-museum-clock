@@ -25,5 +25,8 @@ public:
 
 private:
 
+  bool _solved = false;
+  bool _hs = false;
+  bool _ms = false;
 };
 

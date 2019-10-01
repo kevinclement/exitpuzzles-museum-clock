@@ -17,6 +17,7 @@ void Logic::setup() {
   serial.setup("ExitMuseumClock");
   minuteSensor.setup();
   hourSensor.setup();
+
   encoder.setup();
   stepmotor.setup();
   wifi.setup();
@@ -25,18 +26,30 @@ void Logic::setup() {
 
 void Logic::solved() {
   serial.print("Solved!\n");
+  _solved = true;
   status();
 }
 
 void Logic::handle() {
   serial.handle();
+  minuteSensor.handle();
+  hourSensor.handle();
+
   magnet.handle();
   wifi.handle();
   encoder.handle();
   stepmotor.handle();
 
-  minuteSensor.handle();
-  hourSensor.handle();
+  if (hourSensor.solved != _hs || minuteSensor.solved != _ms) {
+    _hs = hourSensor.solved;
+    _ms = minuteSensor.solved;
+
+    if (!_solved && _hs && _ms) {
+      solved();
+    } else {
+      status();
+    }
+  }
 }
 
 void Logic::status() {
@@ -48,6 +61,8 @@ void Logic::status() {
       "gitDate:%s,"
       "buildDate:%s,"
 
+      "hs:%s,"
+      "ms:%s,"
       "solved:%s"
 
       "%s"
@@ -55,7 +70,9 @@ void Logic::status() {
       GIT_DATE,
       DATE_NOW,
 
-      "false",
+      _hs ? "true" : "false",
+      _ms ? "true" : "false",
+      _solved ? "true" : "false",
 
       CRLF);
 
