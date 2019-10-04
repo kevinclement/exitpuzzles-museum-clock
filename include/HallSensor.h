@@ -12,6 +12,7 @@ class HallSensor {
     void fake();
 
     bool solved = false;
+    bool debug = false; 
 
   private:
     Logic &_logic;

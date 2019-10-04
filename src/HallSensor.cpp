@@ -10,6 +10,7 @@ HallSensor::HallSensor(Logic &logic, uint PIN, const char * label)
 }
 
 void HallSensor::setup() {
+  pinMode(_pin, INPUT);
 }
 
 // fake the sensor so I can code without hardware
@@ -18,9 +19,12 @@ void HallSensor::fake() {
 }
 
 int HallSensor::readSensor() {
-  // TODO: turn this back on when wired
-  //int val = analogRead(_pin); 
-  int val = 0;
+  int val = analogRead(_pin); 
+
+  if (debug) {
+    _logic.serial.print("%-8s: sensor: %d\r\n", _label, val);
+    delay(100);
+  }
 
   if (fakeIt) {
     val = HALL_THRESH;
@@ -30,8 +34,6 @@ int HallSensor::readSensor() {
 }
 
 void HallSensor::handle() {
-  
-
   if (readSensor() < HALL_THRESH) {
     if (solved) {
       _logic.serial.print("%s: hall turned off\r\n", _label);
