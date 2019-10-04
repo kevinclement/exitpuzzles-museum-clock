@@ -2,7 +2,6 @@
 #include "HallSensor.h"
 #include "logic.h"
 
-#define HALL_THRESH 10   // TODO: use a proper number
 #define HALL_BOUNCE 1000 // TODO: use a proper number
 
 HallSensor::HallSensor(Logic &logic, uint PIN, const char * label)
@@ -19,7 +18,7 @@ void HallSensor::fake() {
 }
 
 int HallSensor::readSensor() {
-  int val = analogRead(_pin); 
+  int val = digitalRead(_pin); 
 
   if (debug) {
     _logic.serial.print("%-8s: sensor: %d\r\n", _label, val);
@@ -27,14 +26,14 @@ int HallSensor::readSensor() {
   }
 
   if (fakeIt) {
-    val = HALL_THRESH;
+    val = 0;
   }
   
   return val;
 }
 
 void HallSensor::handle() {
-  if (readSensor() < HALL_THRESH) {
+  if (readSensor() == 1) {
     if (solved) {
       _logic.serial.print("%s: hall turned off\r\n", _label);
     }
