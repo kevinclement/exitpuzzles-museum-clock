@@ -6,8 +6,8 @@ Logic::Logic()
   : serial(),
     wifi(*this),
     magnet(*this),
-    hourSensor(*this,   11, "HOUR"),   // TODO: proper pin
-    minuteSensor(*this, 12, "MINUTE")  // TODO: proper pin
+    hourSensor(*this,   A7, "HOUR"),
+    minuteSensor(*this, A3, "MINUTE")
 {
 }
 
