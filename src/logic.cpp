@@ -13,7 +13,9 @@ Logic::Logic()
     hour(*this),
     minute(*this),
     wifi(*this),
-    magnet(*this)
+    magnet(*this),
+    hourSensor(*this,   A3, "HOUR"),
+    minuteSensor(*this, A2, "MINUTE")
 {
 }
 
@@ -24,6 +26,8 @@ void Logic::setup() {
   stepmotor.setup();
   wifi.setup();
   magnet.setup();
+  hourSensor.setup();
+  minuteSensor.setup();
 }
 
 void Logic::solved() {
@@ -38,6 +42,8 @@ void Logic::handle() {
   hour.handle();
   minute.handle();
   stepmotor.handle();
+  hourSensor.handle();
+  minuteSensor.handle();
 
   if (_hourPos != hour.position) {
     stepmotor.hour_stepper = hour.position / 2;
