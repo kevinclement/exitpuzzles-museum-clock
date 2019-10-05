@@ -8,16 +8,16 @@ class Logic;
 class Encoder {
   public:
     Encoder(Logic &logic);
-    void setup();
+    void setup(const char * label, int PIN1, int PIN2);
     void handle();
 
-    int HOUR = 0;
-    int MINUTE = 0;
+    int VALUE = 0;
+    bool debug = false;
 
   private:
     Logic &_logic;
-
-    void setHour(int);
-    void setMinute(int);
+    const char * _label;
     
+    ESP32Encoder encoder;
+    void setValue(int);
 };

@@ -11,7 +11,8 @@ public:
   Logic();
   SerialManager serial;  
   Stepper stepmotor;
-  Encoder encoder;
+  Encoder hour;
+  Encoder minute;
   WifiUpdate wifi;
   Magnet magnet;
 

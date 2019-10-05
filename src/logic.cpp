@@ -2,10 +2,16 @@
 #include "logic.h"
 #include "consts.h"
 
+#define HOUR_ENC_1_PIN    4
+#define HOUR_ENC_2_PIN    21
+#define MINUTE_ENC_1_PIN  25
+#define MINUTE_ENC_2_PIN  26
+
 Logic::Logic() 
   : serial(),
     stepmotor(*this),
-    encoder(*this),
+    hour(*this),
+    minute(*this),
     wifi(*this),
     magnet(*this)
 {
@@ -13,7 +19,8 @@ Logic::Logic()
 
 void Logic::setup() {
   serial.setup("ExitClock");
-  encoder.setup();
+  hour.setup("hour", HOUR_ENC_1_PIN, HOUR_ENC_2_PIN);
+  minute.setup("minute", MINUTE_ENC_1_PIN, MINUTE_ENC_2_PIN);
   stepmotor.setup();
   wifi.setup();
   magnet.setup();
@@ -28,7 +35,8 @@ void Logic::handle() {
   serial.handle();
   magnet.handle();
   wifi.handle();
-  encoder.handle();
+  hour.handle();
+  minute.handle();
   stepmotor.handle();
 
 }
