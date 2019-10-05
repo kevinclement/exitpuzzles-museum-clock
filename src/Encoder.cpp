@@ -5,7 +5,7 @@
 #define ENCODER_DEBOUNCE  10
 
 #define RESOLUTION        2
-#define STEPS             20021
+#define STEPS             200
 
 int posToTime(int p, int denom) {
   if (p > (STEPS * RESOLUTION)) {
@@ -20,29 +20,27 @@ Encoder::Encoder(Logic &logic)
 {  
 }
 
-void Encoder::setup(const char * label, int PIN1, int PIN2) {
+void Encoder::setup(const char * label, int PIN1, int PIN2, int MAX_VALUE) {
   _label = label;
+  _MAX_VALUE = MAX_VALUE;
   encoder.attachHalfQuad(PIN1, PIN2);
 }
 
 void Encoder::setValue(int pos) {
   
   Serial.printf("%-8s: new pos: %d\r\n", _label, pos);
-  // minute_stepper = minutePos / RESOLUTION;
-  // int posMinute = -posToTime(minutePos, 60);
-  
-  // MINUTE = posMinute + STORED_MINUTE;
-  // if (MINUTE < 0) {
-  //   MINUTE += 60;
-  // } else if (MINUTE >= 60) {
-  //   MINUTE -= 60;
-  // }
 
-  // printStatus();
-    
-  // EEPROM.put(MINUTE_ADDR, MINUTE);
-  // EEPROM.put(MINUTE_STEPPER_ADDR, MINUTE_STEPPER);
-  // EEPROM.commit();
+  // minute_stepper = minutePos / RESOLUTION;
+  int nv = -posToTime(pos, _MAX_VALUE);
+  VALUE = nv;
+
+  if (VALUE < 0) {
+    VALUE += _MAX_VALUE;
+  } else if (VALUE >= _MAX_VALUE) {
+    VALUE -= _MAX_VALUE;
+  }
+
+  Serial.printf("val: %d\r\n", VALUE);
 }
 
 
@@ -60,6 +58,6 @@ void Encoder::handle() {
     lastEnc = millis();
     curPos = newPos;
   }
-  
+
 }
 
