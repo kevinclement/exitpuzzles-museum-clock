@@ -17,7 +17,10 @@ class Encoder {
   private:
     Logic &_logic;
     const char * _label;
-    
+
+    int curPos = 0;
+    unsigned long lastEnc  = millis();
+
     ESP32Encoder encoder;
     void setValue(int);
 };

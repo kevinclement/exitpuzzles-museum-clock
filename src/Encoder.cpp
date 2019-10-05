@@ -7,9 +7,6 @@
 #define RESOLUTION        2
 #define STEPS             20021
 
-int curPos             = 0;
-unsigned long lastEnc  = millis();
-
 int posToTime(int p, int denom) {
   if (p > (STEPS * RESOLUTION)) {
     p %= (STEPS * RESOLUTION);
@@ -30,7 +27,7 @@ void Encoder::setup(const char * label, int PIN1, int PIN2) {
 
 void Encoder::setValue(int pos) {
   
-
+  Serial.printf("%-8s: new pos: %d\r\n", _label, pos);
   // minute_stepper = minutePos / RESOLUTION;
   // int posMinute = -posToTime(minutePos, 60);
   
@@ -50,10 +47,10 @@ void Encoder::setValue(int pos) {
 
 
 void Encoder::handle() {
-  
+
   int newPos = encoder.getCount();
   if (debug) {
-    Serial.printf("%-8s: pos: %d\r\n", _label, newPos);
+    Serial.printf("%-8s: pos: %d cur: %d\r\n", _label, newPos, curPos);
   }
 
   if (newPos != curPos) {
@@ -63,5 +60,6 @@ void Encoder::handle() {
     lastEnc = millis();
     curPos = newPos;
   }
+  
 }
 
