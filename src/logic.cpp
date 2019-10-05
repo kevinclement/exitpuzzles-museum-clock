@@ -32,6 +32,8 @@ void Logic::setup() {
 
 void Logic::solved() {
   serial.print("Solved!\n");
+  _solved = true;
+  magnet._enabled = false;
   status();
 }
 
@@ -49,6 +51,22 @@ void Logic::handle() {
     stepmotor.hour_stepper = hour.position / 2;
     _hourPos = hour.position;
   }
+
+  if (_minPos != minute.position) {
+    stepmotor.minute_stepper = minute.position / 2;
+    _minPos = minute.position;
+  }
+
+  if (hourSensor.solved != _hs || minuteSensor.solved != _ms) {
+    _hs = hourSensor.solved;
+    _ms = minuteSensor.solved;
+
+    if (!_solved && _hs && _ms) {
+      solved();
+    } else {
+      status();
+    }
+  }
 }
 
 void Logic::status() {
@@ -60,6 +78,8 @@ void Logic::status() {
       "gitDate:%s,"
       "buildDate:%s,"
 
+      "hs:%s,"
+      "ms:%s,"
       "solved:%s"
 
       "%s"
@@ -67,9 +87,16 @@ void Logic::status() {
       GIT_DATE,
       DATE_NOW,
 
-      "false",
+      _hs ? "true" : "false",
+      _ms ? "true" : "false",
+      _solved ? "true" : "false",
 
       CRLF);
 
   serial.print(cMsg);
 }
+
+      
+
+      
+
