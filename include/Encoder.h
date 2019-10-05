@@ -11,7 +11,8 @@ class Encoder {
     void setup(const char * label, int PIN1, int PIN2, int MAX_VALUE);
     void handle();
 
-    int VALUE = 0;
+    int time = 0;
+    int position = 0;
     bool debug = false;
 
   private:

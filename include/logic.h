@@ -23,5 +23,7 @@ public:
 
 private:
 
+  int _hourPos = 0;
+  int _minPos = 0;
 };
 

@@ -27,20 +27,19 @@ void Encoder::setup(const char * label, int PIN1, int PIN2, int MAX_VALUE) {
 }
 
 void Encoder::setValue(int pos) {
-  
+
+  // TODO: turn debug on for these eventually
   Serial.printf("%-8s: new pos: %d\r\n", _label, pos);
 
-  // minute_stepper = minutePos / RESOLUTION;
-  int nv = -posToTime(pos, _MAX_VALUE);
-  VALUE = nv;
+  time = -posToTime(pos, _MAX_VALUE);
+  position = pos;
 
-  if (VALUE < 0) {
-    VALUE += _MAX_VALUE;
-  } else if (VALUE >= _MAX_VALUE) {
-    VALUE -= _MAX_VALUE;
+  if (time < 0) {
+    time += _MAX_VALUE;
+  } else if (time >= _MAX_VALUE) {
+    time -= _MAX_VALUE;
   }
 
-  Serial.printf("val: %d\r\n", VALUE);
 }
 
 

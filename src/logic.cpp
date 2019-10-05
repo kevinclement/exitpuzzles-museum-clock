@@ -39,6 +39,10 @@ void Logic::handle() {
   minute.handle();
   stepmotor.handle();
 
+  if (_hourPos != hour.position) {
+    stepmotor.hour_stepper = hour.position / 2;
+    _hourPos = hour.position;
+  }
 }
 
 void Logic::status() {
