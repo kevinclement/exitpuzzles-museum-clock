@@ -82,6 +82,7 @@ void Logic::status() {
       "encMinute:%d,"
       "hs:%s,"
       "ms:%s,"
+      "stepper:%s,"
       "solved:%s"
 
       "%s"
@@ -94,6 +95,7 @@ void Logic::status() {
       _hs ? "true" : "false",
       _ms ? "true" : "false",
       _solved ? "true" : "false",
+      stepmotor._enabled ? "true" : "false",
 
       CRLF);
 
