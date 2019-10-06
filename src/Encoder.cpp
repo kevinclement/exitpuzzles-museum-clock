@@ -29,7 +29,7 @@ void Encoder::setup(const char * label, int PIN1, int PIN2, int MAX_VALUE) {
 void Encoder::setValue(int pos) {
 
   // TODO: turn debug on for these eventually
-  Serial.printf("%-8s: new pos: %d\r\n", _label, pos);
+  _logic.serial.print("%-8s: new pos: %d\r\n", _label, pos);
 
   time = -posToTime(pos, _MAX_VALUE);
   position = pos;
@@ -47,7 +47,7 @@ void Encoder::handle() {
 
   int newPos = encoder.getCount();
   if (debug) {
-    Serial.printf("%-8s: pos: %d cur: %d\r\n", _label, newPos, curPos);
+    _logic.serial.print("%-8s: pos: %d cur: %d\r\n", _label, newPos, curPos);
   }
 
   if (newPos != curPos) {
