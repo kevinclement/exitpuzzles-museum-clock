@@ -49,7 +49,7 @@ void setup() {
   logic.serial.registerCommand(SerialCommand("solve",   'v', &solve,           "solve",   "force a puzzle solve of the device"));
   logic.serial.registerCommand(SerialCommand("debug",   'x', &debug,           "debug",   "toggle debugging of encoders"));
   logic.serial.registerCommand(SerialCommand("hour",    'h', &hourIncrement,   "hour",    "increment hour count as an override"));
-  logic.serial.registerCommand(SerialCommand("m",       'm', &minuteIncrement, "minute",  "increment minute count as an override"));
+  logic.serial.registerCommand(SerialCommand("minute",  'm', &minuteIncrement, "minute",  "increment minute count as an override"));
   logic.serial.registerCommand(SerialCommand("reboot",  'r', &reboot,          "reboot",  "software reboot the device"));
 
   logic.serial.printHelp();

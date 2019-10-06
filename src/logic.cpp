@@ -78,6 +78,8 @@ void Logic::status() {
       "gitDate:%s,"
       "buildDate:%s,"
 
+      "encHour:%d,"
+      "encMinute:%d,"
       "hs:%s,"
       "ms:%s,"
       "solved:%s"
@@ -87,6 +89,8 @@ void Logic::status() {
       GIT_DATE,
       DATE_NOW,
 
+      hour.encoder.getCount(),
+      minute.encoder.getCount(),
       _hs ? "true" : "false",
       _ms ? "true" : "false",
       _solved ? "true" : "false",
