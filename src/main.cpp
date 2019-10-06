@@ -30,14 +30,19 @@ void hourIncrement(int) {
   logic.serial.print("incrementing hour...%s", CRLF);
   
   int cur = logic.hour.encoder.getCount();
-  logic.hour.encoder.setCount(cur + 50);
+  logic.hour.encoder.setCount(cur + 10);
 }
 
 void minuteIncrement(int) {
   logic.serial.print("incrementing minute...%s", CRLF);
   
   int cur = logic.minute.encoder.getCount();
-  logic.minute.encoder.setCount(cur + 50);
+  logic.minute.encoder.setCount(cur + 10);
+}
+
+void motorToggle(int) {
+  logic.serial.print("toggling stepper motor...%s", CRLF);
+  logic.stepmotor._enabled = !logic.stepmotor._enabled;
 }
 
 void setup() {  
@@ -50,6 +55,7 @@ void setup() {
   logic.serial.registerCommand(SerialCommand("debug",   'x', &debug,           "debug",   "toggle debugging of encoders"));
   logic.serial.registerCommand(SerialCommand("hour",    'h', &hourIncrement,   "hour",    "increment hour count as an override"));
   logic.serial.registerCommand(SerialCommand("minute",  'm', &minuteIncrement, "minute",  "increment minute count as an override"));
+  logic.serial.registerCommand(SerialCommand("motor",   't', &motorToggle,     "motor",   "toggle the motor enabled"));
   logic.serial.registerCommand(SerialCommand("reboot",  'r', &reboot,          "reboot",  "software reboot the device"));
 
   logic.serial.printHelp();
