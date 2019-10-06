@@ -26,15 +26,31 @@ void debug(int) {
   //logic.hourSensor.debug = !logic.hourSensor.debug;
 }
 
+void hourIncrement(int) {
+  logic.serial.print("incrementing hour...%s", CRLF);
+  
+  int cur = logic.hour.encoder.getCount();
+  logic.hour.encoder.setCount(cur + 100);
+}
+
+void minuteIncrement(int) {
+  logic.serial.print("incrementing minute...%s", CRLF);
+  
+  int cur = logic.minute.encoder.getCount();
+  logic.minute.encoder.setCount(cur + 100);
+}
+
 void setup() {  
   logic.setup();
   logic.serial.print("Museum Grandfather clock by kevinc...\n");
   Serial.println(getFullVersion("museum-clock"));
 
-  logic.serial.registerCommand(SerialCommand("status",  's', &status,     "status",  "gets the status of device"));
-  logic.serial.registerCommand(SerialCommand("solve",   'v', &solve,      "solve",   "force a puzzle solve of the device"));
-  logic.serial.registerCommand(SerialCommand("debug",   'x', &debug,      "debug",   "toggle debugging of encoders"));
-  logic.serial.registerCommand(SerialCommand("reboot",  'r', &reboot,     "reboot",  "software reboot the device"));
+  logic.serial.registerCommand(SerialCommand("status",  's', &status,          "status",  "gets the status of device"));
+  logic.serial.registerCommand(SerialCommand("solve",   'v', &solve,           "solve",   "force a puzzle solve of the device"));
+  logic.serial.registerCommand(SerialCommand("debug",   'x', &debug,           "debug",   "toggle debugging of encoders"));
+  logic.serial.registerCommand(SerialCommand("hour",    'h', &hourIncrement,   "hour",    "increment hour count as an override"));
+  logic.serial.registerCommand(SerialCommand("m",       'm', &minuteIncrement, "minute",  "increment minute count as an override"));
+  logic.serial.registerCommand(SerialCommand("reboot",  'r', &reboot,          "reboot",  "software reboot the device"));
 
   logic.serial.printHelp();
   logic.status();

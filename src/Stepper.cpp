@@ -27,7 +27,11 @@ void Stepper::setup() {
 }
 
 void Stepper::handle() {
-  digitalWrite(ENABLE_PIN, _enabled ? LOW : HIGH);
+  if (!_enabled || (stepperHour.distanceToGo() == 0 && stepperMinute.distanceToGo() == 0)) {
+    digitalWrite(ENABLE_PIN, HIGH);
+  } else {
+    digitalWrite(ENABLE_PIN, LOW);
+  }
 
   stepperHour.moveTo(hour_stepper);
   stepperHour.setSpeed(100);

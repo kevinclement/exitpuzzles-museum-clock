@@ -14,6 +14,7 @@ class Encoder {
     int time = 0;
     int position = 0;
     bool debug = false;
+    ESP32Encoder encoder;
 
   private:
     Logic &_logic;
@@ -23,6 +24,5 @@ class Encoder {
     int curPos = 0;
     unsigned long lastEnc  = millis();
 
-    ESP32Encoder encoder;
     void setValue(int);
 };
