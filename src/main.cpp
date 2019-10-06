@@ -43,6 +43,8 @@ void minuteIncrement(int) {
 void motorToggle(int) {
   logic.serial.print("toggling stepper motor...%s", CRLF);
   logic.stepmotor._enabled = !logic.stepmotor._enabled;
+  logic.status();
+
 }
 
 void setup() {  

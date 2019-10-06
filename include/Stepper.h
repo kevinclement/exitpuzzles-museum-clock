@@ -11,7 +11,7 @@ class Stepper {
     void setup();
     void handle();
     
-    bool _enabled      = true;
+    bool _enabled      = false; // start disabled to reduce noise
 
     int hour_stepper   = 0;
     int minute_stepper = 0;
