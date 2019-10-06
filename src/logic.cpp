@@ -94,8 +94,8 @@ void Logic::status() {
       minute.encoder.getCount(),
       _hs ? "true" : "false",
       _ms ? "true" : "false",
-      _solved ? "true" : "false",
       stepmotor._enabled ? "true" : "false",
+      _solved ? "true" : "false",
 
       CRLF);
 
