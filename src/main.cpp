@@ -30,14 +30,14 @@ void hourIncrement(int) {
   logic.serial.print("incrementing hour...%s", CRLF);
   
   int cur = logic.hour.encoder.getCount();
-  logic.hour.encoder.setCount(cur + 100);
+  logic.hour.encoder.setCount(cur + 50);
 }
 
 void minuteIncrement(int) {
   logic.serial.print("incrementing minute...%s", CRLF);
   
   int cur = logic.minute.encoder.getCount();
-  logic.minute.encoder.setCount(cur + 100);
+  logic.minute.encoder.setCount(cur + 50);
 }
 
 void setup() {  
