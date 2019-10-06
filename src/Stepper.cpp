@@ -27,11 +27,12 @@ void Stepper::setup() {
 }
 
 void Stepper::handle() {
-  if (!_enabled || (stepperHour.distanceToGo() == 0 && stepperMinute.distanceToGo() == 0)) {
-    digitalWrite(ENABLE_PIN, HIGH);
-  } else {
+  // TODO: add this back once I debug why it doesn't work when doing encoder increments/decrements
+  // if (!_enabled || (stepperHour.distanceToGo() == 0 && stepperMinute.distanceToGo() == 0)) {
+  //   digitalWrite(ENABLE_PIN, HIGH);
+  // } else {
     digitalWrite(ENABLE_PIN, LOW);
-  }
+  // }
 
   stepperHour.moveTo(hour_stepper);
   stepperHour.setSpeed(100);
