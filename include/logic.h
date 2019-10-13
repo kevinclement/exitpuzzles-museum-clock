@@ -3,7 +3,6 @@
 #include "SerialManager.h"
 #include "Stepper.h"
 #include "Encoder.h"
-#include "WifiUpdate.h"
 #include "Magnet.h"
 #include "HallSensor.h"
 
@@ -14,7 +13,6 @@ public:
   Stepper stepmotor;
   Encoder hour;
   Encoder minute;
-  WifiUpdate wifi;
   Magnet magnet;
   HallSensor hourSensor;
   HallSensor minuteSensor;

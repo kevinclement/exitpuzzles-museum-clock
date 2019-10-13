@@ -12,7 +12,6 @@ Logic::Logic()
     stepmotor(*this),
     hour(*this),
     minute(*this),
-    wifi(*this),
     magnet(*this),
     hourSensor(*this,   A3, "HOUR"),
     minuteSensor(*this, A2, "MINUTE")
@@ -20,11 +19,10 @@ Logic::Logic()
 }
 
 void Logic::setup() {
-  serial.setup("ExitClock");
+  serial.setup("");
   hour.setup("hour", HOUR_ENC_1_PIN, HOUR_ENC_2_PIN, 12);
   minute.setup("minute", MINUTE_ENC_1_PIN, MINUTE_ENC_2_PIN, 60);
   stepmotor.setup();
-  wifi.setup();
   magnet.setup();
   hourSensor.setup();
   minuteSensor.setup();
@@ -40,7 +38,6 @@ void Logic::solved() {
 void Logic::handle() {
   serial.handle();
   magnet.handle();
-  wifi.handle();
   hour.handle();
   minute.handle();
   stepmotor.handle();
