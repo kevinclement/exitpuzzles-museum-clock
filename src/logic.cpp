@@ -32,6 +32,7 @@ void Logic::solved() {
   serial.print("Solved!\n");
   _solved = true;
   magnet._enabled = false;
+  stepmotor._enabled = false;
   status();
 }
 
