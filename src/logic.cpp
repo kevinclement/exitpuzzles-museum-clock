@@ -3,7 +3,7 @@
 #include "consts.h"
 
 #define HOUR_ENC_1_PIN    4
-#define HOUR_ENC_2_PIN    21
+#define HOUR_ENC_2_PIN    36
 #define MINUTE_ENC_1_PIN  25
 #define MINUTE_ENC_2_PIN  26
 
