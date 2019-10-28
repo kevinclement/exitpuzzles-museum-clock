@@ -30,7 +30,7 @@ void Encoder::setValue(int pos) {
 
   // TODO: turn debug on for these eventually
   // _logic.serial.print("%-8s: new pos: %d\r\n", _label, pos);
-
+  
   time = -posToTime(pos, _MAX_VALUE);
   position = pos;
 
@@ -46,6 +46,7 @@ void Encoder::setValue(int pos) {
 void Encoder::handle() {
 
   int newPos = encoder.getCount();
+  //if (debug && _label == "minute" && newPos != curPos) {
   if (debug) {
     _logic.serial.print("%-8s: pos: %d cur: %d\r\n", _label, newPos, curPos);
   }
