@@ -21,6 +21,7 @@ public:
   void handle();
   void solved();
   void status();
+  void resetHand(bool hour);
 
 private:
 

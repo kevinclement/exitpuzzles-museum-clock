@@ -16,13 +16,22 @@ Stepper::Stepper(Logic &logic)
 {  
 }
 
+void Stepper::setSpeed(bool hour, int speed) {
+  if (hour) {
+    stepperHour.setSpeed(speed);
+  }
+  else {
+    stepperMinute.setSpeed(speed);
+  }
+}
+
 void Stepper::setup() {
   // setup enabled pin for motors (shared)
   pinMode(ENABLE_PIN, OUTPUT);
 
   // Setup max speed for steppers
-  stepperHour.setMaxSpeed(500);
-  stepperMinute.setMaxSpeed(500);
+  stepperHour.setMaxSpeed(200);
+  stepperMinute.setMaxSpeed(200);
 }
 
 void Stepper::handle() {
@@ -36,12 +45,11 @@ void Stepper::handle() {
   digitalWrite(ENABLE_PIN, _enabled || _resetHour || _resetMinute ? LOW : HIGH);
 
   if (_resetHour) {
-    stepperHour.setSpeed(20);
     stepperHour.runSpeed();
   } 
   
   if (_resetMinute) {
-    stepperMinute.setSpeed(20);
+    
     stepperMinute.runSpeed();
   } 
   

@@ -42,7 +42,7 @@ void hourDec(int) {
 
 void hourReset(int) {
   logic.serial.print("toggling resetting hour hand...%s", CRLF);
-  logic.stepmotor._resetHour = !logic.stepmotor._resetHour;
+  logic.resetHand(true);
 }
 
 void minuteIncrement(int) {
@@ -61,7 +61,7 @@ void minuteDec(int) {
 
 void minuteReset(int) {
   logic.serial.print("toggling resetting minute hand...%s", CRLF);
-  logic.stepmotor._resetMinute = !logic.stepmotor._resetMinute;
+  logic.resetHand(false);
 }
 
 void motorToggle(int) {

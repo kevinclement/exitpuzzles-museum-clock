@@ -36,6 +36,16 @@ void Logic::solved() {
   status();
 }
 
+void Logic::resetHand(bool hour) {
+  if (hour) {
+    stepmotor._resetHour = !stepmotor._resetHour;
+    stepmotor.setSpeed(true, 20);
+  } else {
+    stepmotor._resetMinute = !stepmotor._resetMinute;
+    stepmotor.setSpeed(false, 20);
+  }
+}
+
 void Logic::handle() {
   serial.handle();
   magnet.handle();
@@ -57,7 +67,7 @@ void Logic::handle() {
 
   // if we're resetting, the don't trigger solution
   if (stepmotor._resetHour || stepmotor._resetMinute) {
-    if (_hrt != 0 && millis() - _hrt > 15000) {
+    if (_hrt != 0 && millis() - _hrt > 3000) {
       serial.print("ran hour long enough. stopping now.%s", CRLF);
       stepmotor._resetHour = false;
       hour.encoder.clearCount();
@@ -66,10 +76,11 @@ void Logic::handle() {
 
     if (stepmotor._resetHour && hourSensor.solved && _hrt == 0) {
       serial.print("found hour home. starting timer.%s", CRLF);
+      stepmotor.setSpeed(true, 100);
       _hrt = millis();
     }
 
-    if (_mrt != 0 && millis() - _mrt > 5000) {
+    if (_mrt != 0 && millis() - _mrt > 800) {
       serial.print("ran minute long enough. stopping now.%s", CRLF);
       stepmotor._resetMinute = false;
       minute.encoder.clearCount();
@@ -78,6 +89,7 @@ void Logic::handle() {
 
     if (stepmotor._resetMinute && minuteSensor.solved && _mrt == 0) {
       serial.print("found minute home. starting timer.%s", CRLF);
+      stepmotor.setSpeed(false, 100);
       _mrt = millis();
     }
   } else {
