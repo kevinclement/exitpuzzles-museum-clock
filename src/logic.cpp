@@ -55,16 +55,44 @@ void Logic::handle() {
     _minPos = minute.position;
   }
 
-  if (hourSensor.solved != _hs || minuteSensor.solved != _ms) {
-    _hs = hourSensor.solved;
-    _ms = minuteSensor.solved;
+  // if we're resetting, the don't trigger solution
+  if (stepmotor._resetHour || stepmotor._resetMinute) {
+    if (_hrt != 0 && millis() - _hrt > 15000) {
+      serial.print("ran hour long enough. stopping now.%s", CRLF);
+      stepmotor._resetHour = false;
+      hour.encoder.clearCount();
+      _hrt = 0;
+    }
 
-    if (!_solved && _hs && _ms) {
-      solved();
-    } else {
-      status();
+    if (stepmotor._resetHour && hourSensor.solved && _hrt == 0) {
+      serial.print("found hour home. starting timer.%s", CRLF);
+      _hrt = millis();
+    }
+
+    if (_mrt != 0 && millis() - _mrt > 5000) {
+      serial.print("ran minute long enough. stopping now.%s", CRLF);
+      stepmotor._resetMinute = false;
+      minute.encoder.clearCount();
+      _mrt = 0;
+    }
+
+    if (stepmotor._resetMinute && minuteSensor.solved && _mrt == 0) {
+      serial.print("found minute home. starting timer.%s", CRLF);
+      _mrt = millis();
+    }
+  } else {
+    if (hourSensor.solved != _hs || minuteSensor.solved != _ms) {
+      _hs = hourSensor.solved;
+      _ms = minuteSensor.solved;
+
+      if (!_solved && _hs && _ms) {
+        solved();
+      } else {
+        status();
+      }
     }
   }
+  
 }
 
 void Logic::status() {

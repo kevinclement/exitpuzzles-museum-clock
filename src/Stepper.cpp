@@ -23,7 +23,6 @@ void Stepper::setup() {
   // Setup max speed for steppers
   stepperHour.setMaxSpeed(500);
   stepperMinute.setMaxSpeed(500);
-
 }
 
 void Stepper::handle() {
@@ -34,13 +33,25 @@ void Stepper::handle() {
     // digitalWrite(ENABLE_PIN, LOW);
   // }
 
-  digitalWrite(ENABLE_PIN, _enabled ? LOW : HIGH);
+  digitalWrite(ENABLE_PIN, _enabled || _resetHour || _resetMinute ? LOW : HIGH);
 
-  stepperHour.moveTo(hour_stepper);
-  stepperHour.setSpeed(100);
-  stepperHour.runSpeedToPosition();
+  if (_resetHour) {
+    stepperHour.setSpeed(20);
+    stepperHour.runSpeed();
+  } 
+  
+  if (_resetMinute) {
+    stepperMinute.setSpeed(20);
+    stepperMinute.runSpeed();
+  } 
+  
+  if (!_resetHour && !_resetMinute) {
+    stepperHour.moveTo(hour_stepper);
+    stepperHour.setSpeed(100);
+    stepperHour.runSpeedToPosition();
 
-  stepperMinute.moveTo(minute_stepper);
-  stepperMinute.setSpeed(100);
-  stepperMinute.runSpeedToPosition();
+    stepperMinute.moveTo(minute_stepper);
+    stepperMinute.setSpeed(100);
+    stepperMinute.runSpeedToPosition();
+  }
 }
