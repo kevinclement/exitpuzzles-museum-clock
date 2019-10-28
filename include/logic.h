@@ -30,6 +30,7 @@ private:
   bool _hs = false;
   bool _ms = false;
   bool _solved = false;
+  bool _fresh = true;
   unsigned long _hrt = 0;
   unsigned long _mrt = 0;
 };

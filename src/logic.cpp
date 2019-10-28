@@ -56,13 +56,24 @@ void Logic::handle() {
   minuteSensor.handle();
 
   if (_hourPos != hour.position) {
+    _fresh = false;
     stepmotor.hour_stepper = hour.position / 2;
     _hourPos = hour.position;
   }
 
   if (_minPos != minute.position) {
+    _fresh = false;
     stepmotor.minute_stepper = minute.position / 2;
     _minPos = minute.position;
+  }
+
+  // if this is a clean boot and we've solved it then reset the motors
+  if (_fresh && hourSensor.solved && minuteSensor.solved) {
+    serial.print("detected boot with solved position still.  resetting hands...%s", CRLF);
+    resetHand(true);
+    resetHand(false);
+    _fresh = false;
+    return;
   }
 
   // if we're resetting, the don't trigger solution
