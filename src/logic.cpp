@@ -78,7 +78,7 @@ void Logic::handle() {
 
   // if we're resetting, the don't trigger solution
   if (stepmotor._resetHour || stepmotor._resetMinute) {
-    if (_hrt != 0 && millis() - _hrt > 3000) {
+    if (_hrt != 0 && millis() - _hrt > 800) {
       serial.print("ran hour long enough. stopping now.%s", CRLF);
       stepmotor._resetHour = false;
       hour.encoder.clearCount();
@@ -91,7 +91,7 @@ void Logic::handle() {
       _hrt = millis();
     }
 
-    if (_mrt != 0 && millis() - _mrt > 800) {
+    if (_mrt != 0 && millis() - _mrt > 3000) {
       serial.print("ran minute long enough. stopping now.%s", CRLF);
       stepmotor._resetMinute = false;
       minute.encoder.clearCount();
