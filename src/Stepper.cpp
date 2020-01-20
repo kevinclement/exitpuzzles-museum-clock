@@ -49,7 +49,6 @@ void Stepper::handle() {
   } 
   
   if (_resetMinute) {
-    
     stepperMinute.runSpeed();
   } 
   
