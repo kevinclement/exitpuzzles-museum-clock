@@ -26,6 +26,15 @@ void Encoder::setup(const char * label, int PIN1, int PIN2, int MAX_VALUE) {
   encoder.attachHalfQuad(PIN1, PIN2);
 }
 
+void Encoder::pause() {
+  disabled = !disabled;
+  if (disabled) {
+    encoder.pauseCount();
+  } else {
+    encoder.resumeCount();
+  }
+}
+
 void Encoder::setValue(int pos) {
 
   // TODO: turn debug on for these eventually
@@ -39,11 +48,13 @@ void Encoder::setValue(int pos) {
   } else if (time >= _MAX_VALUE) {
     time -= _MAX_VALUE;
   }
-
 }
 
-
 void Encoder::handle() {
+
+  if (disabled) {
+    return;
+  }
 
   int newPos = encoder.getCount();
   //if (debug && _label == "minute" && newPos != curPos) {

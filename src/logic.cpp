@@ -129,6 +129,7 @@ void Logic::status() {
 
       "encHour:%d,"
       "encMinute:%d,"
+      "encDisabled:%s,"
       "hs:%s,"
       "ms:%s,"
       "stepper:%s,"
@@ -141,6 +142,7 @@ void Logic::status() {
 
       hour.encoder.getCount(),
       minute.encoder.getCount(),
+      minute.disabled ? "true" : "false",
       _hs ? "true" : "false",
       _ms ? "true" : "false",
       stepmotor._enabled ? "true" : "false",
@@ -150,8 +152,3 @@ void Logic::status() {
 
   serial.print(cMsg);
 }
-
-      
-
-      
-

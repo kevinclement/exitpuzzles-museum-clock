@@ -26,6 +26,12 @@ void debug(int) {
   //logic.hourSensor.debug = !logic.hourSensor.debug;
 }
 
+void disableEncoder(int) {
+  logic.serial.print("toggling encoder disabling of readings...%s", CRLF);
+  logic.hour.pause();
+  logic.minute.pause();
+}
+
 void hourIncrement(int) {
   logic.serial.print("incrementing hour...%s", CRLF);
   
@@ -68,25 +74,25 @@ void motorToggle(int) {
   logic.serial.print("toggling stepper motor...%s", CRLF);
   logic.stepmotor._enabled = !logic.stepmotor._enabled;
   logic.status();
-
 }
 
-void setup() {  
+void setup() {
   logic.setup();
   logic.serial.print("Museum Grandfather clock by kevinc...\n");
   Serial.println(getFullVersion("museum-clock"));
 
-  logic.serial.registerCommand(SerialCommand("status",   's',  &status,          "status",    "gets the status of device"));
-  logic.serial.registerCommand(SerialCommand("solve",    'v',  &solve,           "solve",     "force a puzzle solve of the device"));
-  logic.serial.registerCommand(SerialCommand("debug",    'x',  &debug,           "debug",     "toggle debugging of encoders"));
-  logic.serial.registerCommand(SerialCommand("hour",     'h',  &hourIncrement,   "hour",      "increment hour count as an override"));
-  logic.serial.registerCommand(SerialCommand("hourDec",  'o',  &hourDec,         "hourDec",   "decrement hour count as an override"));
-  logic.serial.registerCommand(SerialCommand("hourReset", 'a', &hourReset,       "hourReset", "reset the hour hand to its starting position"));
-  logic.serial.registerCommand(SerialCommand("minute",    'm', &minuteIncrement, "minute",    "increment minute count as an override"));
-  logic.serial.registerCommand(SerialCommand("minDec",    'i', &minuteDec,       "minDec",    "decrement minute count as an override"));
-  logic.serial.registerCommand(SerialCommand("minReset",  'b', &minuteReset,     "minReset",  "reset the minute hand to its starting position"));
-  logic.serial.registerCommand(SerialCommand("motor",     't', &motorToggle,     "motor",     "toggle the motor enabled"));
-  logic.serial.registerCommand(SerialCommand("reboot",    'r', &reboot,          "reboot",    "software reboot the device"));
+  logic.serial.registerCommand(SerialCommand("status",         's', &status,          "status",         "gets the status of device"));
+  logic.serial.registerCommand(SerialCommand("solve",          'v', &solve,           "solve",          "force a puzzle solve of the device"));
+  logic.serial.registerCommand(SerialCommand("debug",          'x', &debug,           "debug",          "toggle debugging of encoders"));
+  logic.serial.registerCommand(SerialCommand("disableEncoder", 'y', &disableEncoder,  "disableEncoder", "disableEncoder reading"));
+  logic.serial.registerCommand(SerialCommand("hour",           'h', &hourIncrement,   "hour",           "increment hour count as an override"));
+  logic.serial.registerCommand(SerialCommand("hourDec",        'o', &hourDec,         "hourDec",        "decrement hour count as an override"));
+  logic.serial.registerCommand(SerialCommand("hourReset",      'a', &hourReset,       "hourReset",      "reset the hour hand to its starting position"));
+  logic.serial.registerCommand(SerialCommand("minute",         'm', &minuteIncrement, "minute",         "increment minute count as an override"));
+  logic.serial.registerCommand(SerialCommand("minDec",         'i', &minuteDec,       "minDec",         "decrement minute count as an override"));
+  logic.serial.registerCommand(SerialCommand("minReset",       'b', &minuteReset,     "minReset",       "reset the minute hand to its starting position"));
+  logic.serial.registerCommand(SerialCommand("motor",          't', &motorToggle,     "motor",          "toggle the motor enabled"));
+  logic.serial.registerCommand(SerialCommand("reboot",         'r', &reboot,          "reboot",         "software reboot the device"));
 
   logic.serial.printHelp();
   logic.status();

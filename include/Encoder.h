@@ -10,7 +10,9 @@ class Encoder {
     Encoder(Logic &logic);
     void setup(const char * label, int PIN1, int PIN2, int MAX_VALUE);
     void handle();
+    void pause();
 
+    bool disabled = false;
     int time = 0;
     int position = 0;
     bool debug = false;
