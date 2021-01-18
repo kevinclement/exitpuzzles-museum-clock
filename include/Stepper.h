@@ -11,6 +11,7 @@ class Stepper {
     void setup();
     void handle();
     void setSpeed(bool hour, int speed);
+    void kevintest();
 
     bool _enabled      = false; // default to off until we get the motor whine under control
     bool _resetHour    = false;

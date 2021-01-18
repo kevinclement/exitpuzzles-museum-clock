@@ -32,6 +32,28 @@ void Stepper::setup() {
   // Setup max speed for steppers
   stepperHour.setMaxSpeed(200);
   stepperMinute.setMaxSpeed(200);
+
+  // TMP #################################################
+  // stepperMinute.setMaxSpeed(1000);
+  // stepperMinute.setSpeed(50);	
+
+  // stepperHour.setMaxSpeed(1000);
+  // stepperHour.setSpeed(50);	
+  //stepperHour.setMaxSpeed(100);
+  //stepperHour.setAcceleration(0);
+  // stepperHour.moveTo(500);
+  // digitalWrite(ENABLE_PIN, true ? LOW : HIGH);
+  // ####################################################
+}
+
+void Stepper::kevintest() {
+
+  // if (stepperHour.distanceToGo() == 0)
+  //     stepperHour.moveTo(-stepperHour.currentPosition());
+
+  // stepperHour.run();
+  // stepperHour.runSpeed();
+  stepperMinute.runSpeed();
 }
 
 void Stepper::handle() {

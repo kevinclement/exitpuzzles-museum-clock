@@ -100,4 +100,6 @@ void setup() {
 
 void loop() {
   logic.handle();
+  // logic.stepmotor.kevintest();
+
 }
