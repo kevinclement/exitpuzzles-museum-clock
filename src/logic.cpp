@@ -74,6 +74,8 @@ void Logic::handle() {
   //   and watch for it to fall again.
   if (rightSensor.sensor.fell()) {
     // TODO: better and status
+    //_logic.serial.print("%s: hall turned off\r\n", _label);
+    //   _logic.serial.print("%s: hall turned on\r\n", _label);
     Serial.println("right side: ON!!");
 
     // TODO: add back when motors
