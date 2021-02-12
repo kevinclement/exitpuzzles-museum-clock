@@ -7,12 +7,23 @@
 #define MINUTE_ENC_1_PIN  25
 #define MINUTE_ENC_2_PIN  26
 
+#define HOUR_MTR_PIN1     12
+#define HOUR_MTR_PIN2     27
+#define HOUR_MTR_PIN3     33
+#define HOUR_MTR_PIN4     15
+
+#define MIN_MTR_PIN1      32
+#define MIN_MTR_PIN2      14
+#define MIN_MTR_PIN3      22
+#define MIN_MTR_PIN4      23
+
 #define PIN_SENSOR_LEFT 4
 #define PIN_SENSOR_RIGHT 5
 
 Logic::Logic() 
   : serial(),
-    stepmotor(*this),
+    hourMotor(AccelStepper(AccelStepper::FULL4WIRE, HOUR_MTR_PIN1, HOUR_MTR_PIN2, HOUR_MTR_PIN3, HOUR_MTR_PIN4)),
+    minuteMotor(AccelStepper(AccelStepper::FULL4WIRE, MIN_MTR_PIN1, MIN_MTR_PIN2, MIN_MTR_PIN3, MIN_MTR_PIN4)),
     hour(*this),
     minute(*this),
     magnet(*this),
@@ -29,8 +40,9 @@ void Logic::setup() {
   minute.setup("minute", MINUTE_ENC_1_PIN, MINUTE_ENC_2_PIN);
 
   // vidstepper
-  stepmotor.setup();
-
+  hourMotor.setup(800, 180);
+  minuteMotor.setup(1200, 540);
+  
   // magnet
   magnet.setup();
 
@@ -43,7 +55,6 @@ void Logic::solved() {
   serial.print("Solved!\n");
   _solved = true;
   magnet._enabled = false;
-  stepmotor._enabled = false;
   status();
 }
 
@@ -62,7 +73,8 @@ void Logic::handle() {
   magnet.handle();
   hour.handle();
   minute.handle();
-  stepmotor.handle();
+  hourMotor.handle();
+  minuteMotor.handle();
   leftSensor.handle();
   rightSensor.handle();
 
@@ -78,25 +90,52 @@ void Logic::handle() {
     //   _logic.serial.print("%s: hall turned on\r\n", _label);
     Serial.println("right side: ON!!");
 
-    // TODO: add back when motors
-    // if (ms.state == RESETTING) {
-    //   ms.state = FOUND_SENSOR;
-    //   ms.move(-124);
-    // }
+    if (minuteMotor.state == RESETTING) {
+      minuteMotor.state = FOUND_SENSOR;
+      minuteMotor.move(-124);
+    }
   }
 
   if (leftSensor.sensor.fell()) {
     // TODO: better and status
     Serial.println("left side: ON!!");
 
-    // TODO: add back when motors
-    // if (hs.state == RESETTING) {
-    //   hs.state = FOUND_SENSOR;
-    //   hs.move(124);
-    // }  
+    if (hourMotor.state == RESETTING) {
+      hourMotor.state = FOUND_SENSOR;
+      hourMotor.move(124);
+    }  
   }
 
   // ####################################################
+
+  // ## MOTORS ##############################
+  if (hourMotor.state == RESET && minuteMotor.state == IDLE) {
+    hourMotor.reset();
+  }
+
+  if (hourMotor.state == RESETTING && hourMotor.distanceToGo() == 0) {
+    // TODO: proper serial
+    Serial.println("WARN: did full circle with hour hand and didn't trigger reset.");
+    Serial.println("Moving minute hand and will try again.");
+    
+    hourMotor.state = IDLE;
+    minuteMotor.nudge();
+  }
+
+  if (minuteMotor.state == NUDGED) {
+    // TODO: proper serial
+    Serial.println("Finished nudging minute hand.  Resetting hour again.");
+    minuteMotor.state = IDLE;
+    hourMotor.reset();
+  }
+
+  if (hourMotor.state == RESET && minuteMotor.state == RESET) {
+    hourMotor.state = GAMEON;
+    minuteMotor.state = GAMEON;
+  }
+
+  // ########################################
+
 
   // if (_hourPos != hour.position) {
   //   _fresh = false;
@@ -188,10 +227,11 @@ void Logic::status() {
       minute.disabled ? "true" : "false",
       _hs ? "true" : "false",
       _ms ? "true" : "false",
-      stepmotor._enabled ? "true" : "false",
+      true ? "true" : "false",
       _solved ? "true" : "false",
 
       CRLF);
 
+  // TODO: proper stepper enabled
   serial.print(cMsg);
 }

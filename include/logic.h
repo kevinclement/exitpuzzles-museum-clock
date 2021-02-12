@@ -1,16 +1,17 @@
 #pragma once
 
 #include "SerialManager.h"
-#include "Stepper.h"
 #include "Encoder.h"
 #include "Magnet.h"
 #include "IRSensor.h"
+#include "VidStepper.h"
 
 class Logic {
 public:
   Logic();
-  SerialManager serial;  
-  Stepper stepmotor;
+  SerialManager serial;
+  VidStepper hourMotor;
+  VidStepper minuteMotor;
   Encoder hour;
   Encoder minute;
   Magnet magnet;
