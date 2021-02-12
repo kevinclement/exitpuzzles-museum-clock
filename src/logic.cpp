@@ -7,25 +7,36 @@
 #define MINUTE_ENC_1_PIN  25
 #define MINUTE_ENC_2_PIN  26
 
+#define PIN_SENSOR_LEFT 4
+#define PIN_SENSOR_RIGHT 5
+
 Logic::Logic() 
   : serial(),
     stepmotor(*this),
     hour(*this),
     minute(*this),
     magnet(*this),
-    hourSensor(*this,   A3, "HOUR"),
-    minuteSensor(*this, A2, "MINUTE")
+    leftSensor(*this, PIN_SENSOR_LEFT, "LEFT"),
+    rightSensor(*this, PIN_SENSOR_RIGHT, "RIGHT")
 {
 }
 
 void Logic::setup() {
   serial.setup("");
+
+  // pedastal rotary encoders
   hour.setup("hour", HOUR_ENC_1_PIN, HOUR_ENC_2_PIN);
   minute.setup("minute", MINUTE_ENC_1_PIN, MINUTE_ENC_2_PIN);
+
+  // vidstepper
   stepmotor.setup();
+
+  // magnet
   magnet.setup();
-  hourSensor.setup();
-  minuteSensor.setup();
+
+  // IR sensors
+  leftSensor.setup();
+  rightSensor.setup();
 }
 
 void Logic::solved() {
@@ -37,13 +48,13 @@ void Logic::solved() {
 }
 
 void Logic::resetHand(bool hour) {
-  if (hour) {
-    stepmotor._resetHour = !stepmotor._resetHour;
-    stepmotor.setSpeed(true, 20);
-  } else {
-    stepmotor._resetMinute = !stepmotor._resetMinute;
-    stepmotor.setSpeed(false, 20);
-  }
+  // if (hour) {
+  //   stepmotor._resetHour = !stepmotor._resetHour;
+  //   stepmotor.setSpeed(true, 20);
+  // } else {
+  //   stepmotor._resetMinute = !stepmotor._resetMinute;
+  //   stepmotor.setSpeed(false, 20);
+  // }
 }
 
 void Logic::handle() {
@@ -52,69 +63,69 @@ void Logic::handle() {
   hour.handle();
   minute.handle();
   stepmotor.handle();
-  hourSensor.handle();
-  minuteSensor.handle();
+  leftSensor.handle();
+  rightSensor.handle();
 
-  if (_hourPos != hour.position) {
-    _fresh = false;
-    stepmotor.hour_stepper = hour.position / 2;
-    _hourPos = hour.position;
-  }
+  // if (_hourPos != hour.position) {
+  //   _fresh = false;
+  //   stepmotor.hour_stepper = hour.position / 2;
+  //   _hourPos = hour.position;
+  // }
 
-  if (_minPos != minute.position) {
-    _fresh = false;
-    stepmotor.minute_stepper = minute.position / 2;
-    _minPos = minute.position;
-  }
+  // if (_minPos != minute.position) {
+  //   _fresh = false;
+  //   stepmotor.minute_stepper = minute.position / 2;
+  //   _minPos = minute.position;
+  // }
 
   // if this is a clean boot and we've solved it then reset the motors
-  if (_fresh && hourSensor.solved && minuteSensor.solved) {
-    serial.print("detected boot with solved position still.  resetting hands...%s", CRLF);
-    resetHand(true);
-    resetHand(false);
-    _fresh = false;
-    return;
-  }
+  // if (_fresh && hourSensor.solved && minuteSensor.solved) {
+  //   serial.print("detected boot with solved position still.  resetting hands...%s", CRLF);
+  //   resetHand(true);
+  //   resetHand(false);
+  //   _fresh = false;
+  //   return;
+  // }
 
   // if we're resetting, the don't trigger solution
-  if (stepmotor._resetHour || stepmotor._resetMinute) {
-    if (_hrt != 0 && millis() - _hrt > 1000) {
-      serial.print("ran hour long enough. stopping now.%s", CRLF);
-      stepmotor._resetHour = false;
-      hour.encoder.clearCount();
-      _hrt = 0;
-    }
+  // if (stepmotor._resetHour || stepmotor._resetMinute) {
+  //   if (_hrt != 0 && millis() - _hrt > 1000) {
+  //     serial.print("ran hour long enough. stopping now.%s", CRLF);
+  //     stepmotor._resetHour = false;
+  //     hour.encoder.clearCount();
+  //     _hrt = 0;
+  //   }
 
-    if (stepmotor._resetHour && hourSensor.solved && _hrt == 0) {
-      serial.print("found hour home. starting timer.%s", CRLF);
-      stepmotor.setSpeed(true, 100);
-      _hrt = millis();
-    }
+  //   if (stepmotor._resetHour && hourSensor.solved && _hrt == 0) {
+  //     serial.print("found hour home. starting timer.%s", CRLF);
+  //     stepmotor.setSpeed(true, 100);
+  //     _hrt = millis();
+  //   }
 
-    if (_mrt != 0 && millis() - _mrt > 3050) {
-      serial.print("ran minute long enough. stopping now.%s", CRLF);
-      stepmotor._resetMinute = false;
-      minute.encoder.clearCount();
-      _mrt = 0;
-    }
+  //   if (_mrt != 0 && millis() - _mrt > 3050) {
+  //     serial.print("ran minute long enough. stopping now.%s", CRLF);
+  //     stepmotor._resetMinute = false;
+  //     minute.encoder.clearCount();
+  //     _mrt = 0;
+  //   }
 
-    if (stepmotor._resetMinute && minuteSensor.solved && _mrt == 0) {
-      serial.print("found minute home. starting timer.%s", CRLF);
-      stepmotor.setSpeed(false, 100);
-      _mrt = millis();
-    }
-  } else {
-    if (hourSensor.solved != _hs || minuteSensor.solved != _ms) {
-      _hs = hourSensor.solved;
-      _ms = minuteSensor.solved;
+  //   if (stepmotor._resetMinute && minuteSensor.solved && _mrt == 0) {
+  //     serial.print("found minute home. starting timer.%s", CRLF);
+  //     stepmotor.setSpeed(false, 100);
+  //     _mrt = millis();
+  //   }
+  // } else {
+  //   if (hourSensor.solved != _hs || minuteSensor.solved != _ms) {
+  //     _hs = hourSensor.solved;
+  //     _ms = minuteSensor.solved;
 
-      if (!_solved && _hs && _ms) {
-        solved();
-      } else {
-        status();
-      }
-    }
-  }
+  //     if (!_solved && _hs && _ms) {
+  //       solved();
+  //     } else {
+  //       status();
+  //     }
+  //   }
+  // }
   
 }
 

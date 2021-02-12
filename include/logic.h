@@ -4,7 +4,7 @@
 #include "Stepper.h"
 #include "Encoder.h"
 #include "Magnet.h"
-#include "HallSensor.h"
+#include "IRSensor.h"
 
 class Logic {
 public:
@@ -14,8 +14,8 @@ public:
   Encoder hour;
   Encoder minute;
   Magnet magnet;
-  HallSensor hourSensor;
-  HallSensor minuteSensor;
+  IRSensor leftSensor;
+  IRSensor rightSensor;
 
   void setup();
   void handle();
