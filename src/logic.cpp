@@ -66,6 +66,36 @@ void Logic::handle() {
   leftSensor.handle();
   rightSensor.handle();
 
+  // ## IR Sensor Logic #################################
+
+  // NOTE: since I'm using debounce and watching for fell, it should
+  //   handle the case where I startup with hands already over sensor
+  //   since that won't be a 'fall' event.  It will then move the hands
+  //   and watch for it to fall again.
+  if (rightSensor.sensor.fell()) {
+    // TODO: better and status
+    Serial.println("right side: ON!!");
+
+    // TODO: add back when motors
+    // if (ms.state == RESETTING) {
+    //   ms.state = FOUND_SENSOR;
+    //   ms.move(-124);
+    // }
+  }
+
+  if (leftSensor.sensor.fell()) {
+    // TODO: better and status
+    Serial.println("left side: ON!!");
+
+    // TODO: add back when motors
+    // if (hs.state == RESETTING) {
+    //   hs.state = FOUND_SENSOR;
+    //   hs.move(124);
+    // }  
+  }
+
+  // ####################################################
+
   // if (_hourPos != hour.position) {
   //   _fresh = false;
   //   stepmotor.hour_stepper = hour.position / 2;
