@@ -20,8 +20,8 @@ Logic::Logic()
 
 void Logic::setup() {
   serial.setup("");
-  hour.setup("hour", HOUR_ENC_1_PIN, HOUR_ENC_2_PIN, 12);
-  minute.setup("minute", MINUTE_ENC_1_PIN, MINUTE_ENC_2_PIN, 60);
+  hour.setup("hour", HOUR_ENC_1_PIN, HOUR_ENC_2_PIN);
+  minute.setup("minute", MINUTE_ENC_1_PIN, MINUTE_ENC_2_PIN);
   stepmotor.setup();
   magnet.setup();
   hourSensor.setup();
