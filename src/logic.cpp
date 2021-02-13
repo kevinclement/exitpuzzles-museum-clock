@@ -31,9 +31,6 @@ Logic::Logic()
     rightSensor(*this, PIN_SENSOR_RIGHT, "RIGHT")
 {
 }
-void Logic::tmpKev() {
-  hourMotor.reset();
-}
 
 void Logic::setup() {
   serial.setup("");
@@ -65,14 +62,8 @@ void Logic::solved() {
   status();
 }
 
-void Logic::resetHand(bool hour) {
-  // if (hour) {
-  //   stepmotor._resetHour = !stepmotor._resetHour;
-  //   stepmotor.setSpeed(true, 20);
-  // } else {
-  //   stepmotor._resetMinute = !stepmotor._resetMinute;
-  //   stepmotor.setSpeed(false, 20);
-  // }
+void Logic::resetHands() {
+  hourMotor.reset();
 }
 
 void Logic::handle() {
