@@ -5,6 +5,7 @@
 #include "Magnet.h"
 #include "IRSensor.h"
 #include "VidStepper.h"
+#include "Audio.h"
 
 class Logic {
 public:
@@ -17,6 +18,7 @@ public:
   Magnet magnet;
   IRSensor leftSensor;
   IRSensor rightSensor;
+  Audio audio;
 
   void setup();
   void handle();

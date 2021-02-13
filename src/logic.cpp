@@ -28,12 +28,14 @@ Logic::Logic()
     minute(*this),
     magnet(*this),
     leftSensor(*this, PIN_SENSOR_LEFT, "LEFT"),
-    rightSensor(*this, PIN_SENSOR_RIGHT, "RIGHT")
+    rightSensor(*this, PIN_SENSOR_RIGHT, "RIGHT"),
+    audio(*this)
 {
 }
 
 void Logic::setup() {
   serial.setup("");
+  audio.setup();
 
   // pedastal rotary encoders
   hour.setup("hour", HOUR_ENC_1_PIN, HOUR_ENC_2_PIN);
@@ -72,6 +74,7 @@ void Logic::handle() {
   minute.handle();  
   leftSensor.handle();
   rightSensor.handle();
+  audio.handle();
 
   // ## IR Sensor Logic #################################
 

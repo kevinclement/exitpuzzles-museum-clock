@@ -73,6 +73,12 @@ void motorToggle(int) {
   logic.status();
 }
 
+void audio(int) {
+  logic.serial.print("playing solve audio...%s", CRLF);
+
+  logic.audio._playTone = true;
+}
+
 void setup() {
   logic.setup();
   logic.serial.print("Museum Grandfather clock by kevinc...\n");
@@ -89,6 +95,7 @@ void setup() {
   logic.serial.registerCommand(SerialCommand("minDec",         'i', &minuteDec,       "minDec",         "decrement minute count as an override"));
   logic.serial.registerCommand(SerialCommand("motor",          't', &motorToggle,     "motor",          "toggle the motor enabled"));
   logic.serial.registerCommand(SerialCommand("reboot",         'r', &reboot,          "reboot",         "software reboot the device"));
+  logic.serial.registerCommand(SerialCommand("audio",          'z', &audio,           "audio",          "play the solve audio"));
 
   logic.serial.printHelp();
   logic.status();
