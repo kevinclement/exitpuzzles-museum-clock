@@ -13,14 +13,14 @@ void Audio::setup() {
 
 void Audio::handle() {
     if (_playTone) {
-        // tone(BUZZER_PIN, 700, 120, BUZZER_CHANNEL);
-        // delay(80);
-        // tone(BUZZER_PIN, 700, 120, BUZZER_CHANNEL);
-        // tone(BUZZER_PIN, 900, 220, BUZZER_CHANNEL);
-        tone(BUZZER_PIN, NOTE_C6, 120, BUZZER_CHANNEL);
-        delay(80);
-        tone(BUZZER_PIN, NOTE_F6, 120, BUZZER_CHANNEL);
-        tone(BUZZER_PIN, NOTE_C7, 220, BUZZER_CHANNEL);
+        
+        tone(BUZZER_PIN, NOTE_A2, 500, BUZZER_CHANNEL);
+        delay(100);
+        tone(BUZZER_PIN, NOTE_F2, 500, BUZZER_CHANNEL);
+        delay(100);
+        tone(BUZZER_PIN, NOTE_G2, 500, BUZZER_CHANNEL);
+        delay(100);
+        tone(BUZZER_PIN, NOTE_C2, 500, BUZZER_CHANNEL);
 
         _playTone = false;
     }
