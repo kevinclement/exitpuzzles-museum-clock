@@ -20,6 +20,8 @@
 #define PIN_SENSOR_LEFT 4
 #define PIN_SENSOR_RIGHT 5
 
+#define SOLVED_WAIT_MS 2500
+
 Logic::Logic() 
   : serial(),
     hourMotor(AccelStepper(AccelStepper::FULL4WIRE, HOUR_MTR_PIN1, HOUR_MTR_PIN2, HOUR_MTR_PIN3, HOUR_MTR_PIN4)),
@@ -141,7 +143,6 @@ void Logic::handle() {
 
   // TODO: should probably pauseEncoder when device is disabled
   if (_hourPos != hour.position) {
-    _fresh = false;
     // stepmotor.hour_stepper = hour.position / 2;
 
     int delta = _hourPos - hour.position;
@@ -157,7 +158,6 @@ void Logic::handle() {
   }
 
   if (_minPos != minute.position) {
-    _fresh = false;
     // stepmotor.minute_stepper = minute.position / 2;
     
     int delta = _minPos - minute.position;
@@ -177,21 +177,22 @@ void Logic::handle() {
 
   // ## Final Solved Check ############################
   if (!_solved && minuteMotor.solved && hourMotor.solved) {
-  //   if (solvedAt == 0) {
-  //     Serial.println("solved.  waiting for timeout");
-  //     solvedAt = millis();
-  //   }
+    if (solvedAt == 0) {
+      Serial.println("solved.  waiting for timeout");
+      solvedAt = millis();
+    }
 
-  //   if (!_finished && millis() - solvedAt > SOLVED_WAIT_MS) {
-  //     Serial.println();
-  //     Serial.println("@@@!!!FINISHED!!!@@@");
-  //     Serial.println();
-  //     _finished = true;
-  //   }
-  // } else {
-  //   solvedAt = 0;
-  // }
-    solved();
+    if (!_finished && millis() - solvedAt > SOLVED_WAIT_MS) {
+        Serial.println();
+        Serial.println("@@@!!!FINISHED!!!@@@");
+        Serial.println();
+        
+        _finished = true;
+
+        solved();
+    } else {
+      solvedAt = 0;
+    }
   }
   // ##################################################
   
