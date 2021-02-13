@@ -1,5 +1,4 @@
 #include "Arduino.h"
-#include "Stepper.h"
 #include "logic.h"
 
 #define LOCK_PIN 13

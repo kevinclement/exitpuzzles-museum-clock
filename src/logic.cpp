@@ -31,6 +31,9 @@ Logic::Logic()
     rightSensor(*this, PIN_SENSOR_RIGHT, "RIGHT")
 {
 }
+void Logic::tmpKev() {
+  hourMotor.reset();
+}
 
 void Logic::setup() {
   serial.setup("");
@@ -49,6 +52,10 @@ void Logic::setup() {
   // IR sensors
   leftSensor.setup();
   rightSensor.setup();
+
+
+  // reset motor positions, start with hour hand
+  // hourMotor.reset();
 }
 
 void Logic::solved() {
@@ -72,9 +79,7 @@ void Logic::handle() {
   serial.handle();
   magnet.handle();
   hour.handle();
-  minute.handle();
-  hourMotor.handle();
-  minuteMotor.handle();
+  minute.handle();  
   leftSensor.handle();
   rightSensor.handle();
 
@@ -110,7 +115,7 @@ void Logic::handle() {
 
   // ## MOTORS ##############################
   if (hourMotor.state == RESET && minuteMotor.state == IDLE) {
-    hourMotor.reset();
+    minuteMotor.reset();
   }
 
   if (hourMotor.state == RESETTING && hourMotor.distanceToGo() == 0) {
@@ -134,6 +139,8 @@ void Logic::handle() {
     minuteMotor.state = GAMEON;
   }
 
+  hourMotor.handle();
+  minuteMotor.handle();
   // ########################################
 
 

@@ -78,6 +78,10 @@ void motorToggle(int) {
   logic.status();
 }
 
+void tmpK(int) {
+  logic.tmpKev();
+}
+
 void setup() {
   logic.setup();
   logic.serial.print("Museum Grandfather clock by kevinc...\n");
@@ -95,6 +99,8 @@ void setup() {
   logic.serial.registerCommand(SerialCommand("minReset",       'b', &minuteReset,     "minReset",       "reset the minute hand to its starting position"));
   logic.serial.registerCommand(SerialCommand("motor",          't', &motorToggle,     "motor",          "toggle the motor enabled"));
   logic.serial.registerCommand(SerialCommand("reboot",         'r', &reboot,          "reboot",         "software reboot the device"));
+
+  logic.serial.registerCommand(SerialCommand("kevin",         'k', &tmpK,          "kevin",         "tmp kevin"));
 
   logic.serial.printHelp();
   logic.status();
