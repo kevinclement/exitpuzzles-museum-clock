@@ -40,8 +40,8 @@ void Logic::setup() {
   minute.setup("minute", MINUTE_ENC_1_PIN, MINUTE_ENC_2_PIN);
 
   // vidstepper
-  hourMotor.setup(800, 180);
-  minuteMotor.setup(1200, 540);
+  hourMotor.setup(800,535);
+  minuteMotor.setup(1200,180);
   
   // magnet
   magnet.setup();
@@ -49,7 +49,6 @@ void Logic::setup() {
   // IR sensors
   leftSensor.setup();
   rightSensor.setup();
-
 
   // reset motor positions, start with hour hand
   // hourMotor.reset();
@@ -134,19 +133,64 @@ void Logic::handle() {
   minuteMotor.handle();
   // ########################################
 
+  // ## Rotary Encoders ##############################
 
-  // if (_hourPos != hour.position) {
-  //   _fresh = false;
-  //   stepmotor.hour_stepper = hour.position / 2;
-  //   _hourPos = hour.position;
+  // TODO: should probably pauseEncoder when device is disabled
+  if (_hourPos != hour.position) {
+    _fresh = false;
+    // stepmotor.hour_stepper = hour.position / 2;
+
+    int delta = _hourPos - hour.position;
+    if (delta > 0) {
+      Serial.println("INC_HOUR");
+      hourMotor.move(-STEP_SIZE);
+    } else if (delta < 0) {
+      Serial.println("DEC_HOUR");
+      hourMotor.move(STEP_SIZE);
+    }
+
+    _hourPos = hour.position;
+  }
+
+  if (_minPos != minute.position) {
+    _fresh = false;
+    // stepmotor.minute_stepper = minute.position / 2;
+    
+    int delta = _minPos - minute.position;
+    if (delta > 0) {
+      Serial.println("INC_MIN");
+      minuteMotor.move(-STEP_SIZE);
+    } else if (delta < 0) {
+      Serial.println("DEC_MIN");
+      
+      minuteMotor.move(STEP_SIZE);
+    }
+
+    _minPos = minute.position;
+  }
+
+  // ##################################################
+
+  // ## Final Solved Check ############################
+  if (!_solved && minuteMotor.solved && hourMotor.solved) {
+  //   if (solvedAt == 0) {
+  //     Serial.println("solved.  waiting for timeout");
+  //     solvedAt = millis();
+  //   }
+
+  //   if (!_finished && millis() - solvedAt > SOLVED_WAIT_MS) {
+  //     Serial.println();
+  //     Serial.println("@@@!!!FINISHED!!!@@@");
+  //     Serial.println();
+  //     _finished = true;
+  //   }
+  // } else {
+  //   solvedAt = 0;
   // }
-
-  // if (_minPos != minute.position) {
-  //   _fresh = false;
-  //   stepmotor.minute_stepper = minute.position / 2;
-  //   _minPos = minute.position;
-  // }
-
+    solved();
+  }
+  // ##################################################
+  
   // if this is a clean boot and we've solved it then reset the motors
   // if (_fresh && hourSensor.solved && minuteSensor.solved) {
   //   serial.print("detected boot with solved position still.  resetting hands...%s", CRLF);
@@ -232,4 +276,13 @@ void Logic::status() {
 
   // TODO: proper stepper enabled
   serial.print(cMsg);
+
+  // TODO: remove/move
+  Serial.println("Minutes:");
+  minuteMotor.status();
+  Serial.println();
+
+  Serial.println("Hours:");
+  hourMotor.status();
+  Serial.println();
 }
