@@ -55,7 +55,7 @@ void Logic::setup() {
   rightSensor.setup();
 
   // reset motor positions, start with hour hand
-  // hourMotor.reset();
+  hourMotor.reset();
 }
 
 void Logic::solved() {
@@ -133,6 +133,8 @@ void Logic::handle() {
   if (hourMotor.state == RESET && minuteMotor.state == RESET) {
     hourMotor.state = GAMEON;
     minuteMotor.state = GAMEON;
+
+    // TODO: reset encoder
   }
 
   hourMotor.handle();
@@ -176,7 +178,7 @@ void Logic::handle() {
   // ##################################################
 
   // ## Final Solved Check ############################
-  if (!_solved && minuteMotor.solved && hourMotor.solved) {
+  if (minuteMotor.solved && hourMotor.solved) {
     if (solvedAt == 0) {
       Serial.println("solved.  waiting for timeout");
       solvedAt = millis();
@@ -188,11 +190,10 @@ void Logic::handle() {
         Serial.println();
         
         _finished = true;
-
         solved();
-    } else {
-      solvedAt = 0;
-    }
+    } 
+  } else {
+    solvedAt = 0;
   }
   // ##################################################
   
