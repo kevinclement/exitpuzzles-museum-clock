@@ -2,12 +2,11 @@
 #include "Encoder.h"
 #include "logic.h"
 
-// TODO: dial it in
-#define ENCODER_DEBOUNCE  1
+#define ENCODER_DEBOUNCE  50
 
 Encoder::Encoder(Logic &logic)
 : _logic(logic)
-{  
+{
 }
 
 void Encoder::setup(const char * label, int PIN1, int PIN2) {
