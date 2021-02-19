@@ -28,10 +28,7 @@ void Encoder::setValue(int pos) {
 }
 
 void Encoder::status() {
-  Serial.print(_label);
-  Serial.print(" cur: ");
-  Serial.print(curPos);
-  Serial.println();
+  _logic.serial.print("%-8s: sensor: %d\r\n", _label, curPos);
 }
 
 void Encoder::handle() {
@@ -43,12 +40,7 @@ void Encoder::handle() {
   int newPos = encoder.getCount();
   
   if (debug) {
-    Serial.print(_label);
-    Serial.print(": pos: ");
-    Serial.print(newPos);
-    Serial.print(" cur: ");
-    Serial.print(curPos);
-    Serial.println();
+    _logic.serial.print("%-8s: new: %d cur: %d\r\n", _label, newPos, curPos);
   }
 
   if (millis() - lastEnc > ENCODER_DEBOUNCE) {

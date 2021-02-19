@@ -1,12 +1,14 @@
 #include "Arduino.h"
 #include "VidStepper.h"
+#include "logic.h"
 
-VidStepper::VidStepper(AccelStepper stepper)
-: _stepper(stepper)
+VidStepper::VidStepper(Logic &logic, AccelStepper stepper)
+: _logic(logic), 
+  _stepper(stepper)
 {
 }
  
-void VidStepper::setup(float maxSpeed, float solve) {
+void VidStepper::setup(const char * label, float maxSpeed, float solve) {
   _stepper.setSpeed(300);  
   _stepper.setMaxSpeed(maxSpeed);
 
@@ -15,6 +17,7 @@ void VidStepper::setup(float maxSpeed, float solve) {
   _solveMax = solve + (2 * STEP_SIZE); 
   
   state = IDLE;
+  _label = label;
 }
 
 void VidStepper::handle() {
@@ -33,8 +36,7 @@ void VidStepper::handle() {
     float pos = abs();
     if (pos >= _solveMin && pos <= _solveMax) {
       if (!solved) {
-        // TODO: better output
-        Serial.println("!! SOLVED !!");
+        _logic.serial.print("!! %s: SOLVED !!\r\n", _label);
       }
       solved = true;
     } else {
@@ -74,20 +76,17 @@ long VidStepper::distanceToGo() {
 }
 
 void VidStepper::status() {
-  Serial.print("  current: ");
-  Serial.print(_stepper.currentPosition());
-  Serial.print(" target: ");
-  Serial.print(_stepper.targetPosition());
-  Serial.print(" mod: ");
-  Serial.print(_stepper.currentPosition() % NUM_STEPS);
-  Serial.print(" abs: ");
-  Serial.print(abs());
-  Serial.print(" min: ");
-  Serial.print(_solveMin);
-  Serial.print(" max: ");
-  Serial.print(_solveMax);  
+  _logic.serial.print("%-8s: current: %d target: %d mod: %d abs: %d min: %d max: %d ", 
+    _label,
+    _stepper.currentPosition(),
+    _stepper.targetPosition(),
+    _stepper.currentPosition() % NUM_STEPS,
+    abs(),
+    _solveMin,
+    _solveMax
+  );
 
   if (solved) {
-    Serial.print(" SOLVED");
+    _logic.serial.print("SOLVED");
   }
 }

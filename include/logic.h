@@ -33,7 +33,6 @@ private:
   bool _hs = false;
   bool _ms = false;
   bool _solved = false;
-  bool _finished = false;
   unsigned long solvedAt = 0;
 };
 

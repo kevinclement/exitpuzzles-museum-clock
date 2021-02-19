@@ -1,10 +1,12 @@
-
+#pragma once
 #include "Arduino.h"
 #include <AccelStepper.h>
 
 // VID28-05 is 720 steps per revolution
 #define NUM_STEPS 720
 #define STEP_SIZE 5
+
+class Logic;
 
 enum motorState {
   IDLE,
@@ -18,8 +20,8 @@ enum motorState {
 
 class VidStepper {
   public:
-    VidStepper(AccelStepper stepper);
-    void setup(float maxSpeed, float solve);
+    VidStepper(Logic &logic, AccelStepper stepper);
+    void setup(const char * label, float maxSpeed, float solve);
     void handle();
     
     void move(long relative);
@@ -34,8 +36,10 @@ class VidStepper {
     bool solved = false;
 
   private:
+    Logic &_logic;
     AccelStepper _stepper;
     float _solveMin = 0;
     float _solveMax = 0;
+    const char * _label;
 
 };
