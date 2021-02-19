@@ -34,13 +34,15 @@ void VidStepper::handle() {
   }
 
   if (state == GAMEON && distanceToGo() == 0) {
-    if (position >= _solveMin && position <= _solveMax) {
-      if (!solved) {
-        _logic.serial.print("!! %s: SOLVED !!\r\n", _label);
+    bool prevSolved = solved;
+    solved = (position >= _solveMin && position <= _solveMax);
+
+    // if the state changed, update the status
+    if (prevSolved != solved) {
+      if (solved) {
+        _logic.serial.print("%s SOLVED!\r\n", _label);
       }
-      solved = true;
-    } else {
-      solved = false;
+      _logic.status();
     }
   } 
 }
