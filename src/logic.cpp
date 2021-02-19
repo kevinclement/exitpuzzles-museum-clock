@@ -224,7 +224,7 @@ void Logic::status() {
 
       "encHour:%d,"
       "encMinute:%d,"
-      "encDisabled:%s,"
+      "encoder:%s,"
       "hs:%s,"
       "ms:%s,"
       "hourMotor:%ld,"
@@ -238,7 +238,7 @@ void Logic::status() {
 
       hour.encoder.getCount(),
       minute.encoder.getCount(),
-      minute.disabled ? "true" : "false",
+      minute.disabled ? "false" : "true",
       hourMotor.solved ? "true" : "false",
       minuteMotor.solved ? "true" : "false",
       _hourMotorPos,

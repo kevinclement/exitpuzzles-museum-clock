@@ -25,7 +25,7 @@ void debug(int) {
   logic.minute.debug = !logic.minute.debug;
 }
 
-void disableEncoder(int) {
+void toggleEncoder(int) {
   logic.serial.print("toggling encoder disabling of readings...%s", CRLF);
   logic.hour.pause();
   logic.minute.pause();
@@ -77,7 +77,7 @@ void setup() {
   logic.serial.registerCommand(SerialCommand("status",         's', &status,          "status",         "gets the status of device"));
   logic.serial.registerCommand(SerialCommand("solve",          'v', &solve,           "solve",          "force a puzzle solve of the device"));
   logic.serial.registerCommand(SerialCommand("debug",          'x', &debug,           "debug",          "toggle debugging of encoders"));
-  logic.serial.registerCommand(SerialCommand("disableEncoder", 'y', &disableEncoder,  "disableEncoder", "disableEncoder reading"));
+  logic.serial.registerCommand(SerialCommand("encoder",        'e', &toggleEncoder,   "toggleEncoder",  "toggle heads encoder readings"));
   logic.serial.registerCommand(SerialCommand("hour",           'h', &hourIncrement,   "hour",           "increment hour count as an override"));
   logic.serial.registerCommand(SerialCommand("hourDec",        'o', &hourDec,         "hourDec",        "decrement hour count as an override"));
   logic.serial.registerCommand(SerialCommand("reset",          'a', &resetHands,      "reset",          "reset the hands to the starting positions"));
