@@ -64,14 +64,6 @@ void minuteDec(int) {
   logic.minute.encoder.setCount(cur + 10);
 }
 
-void motorToggle(int) {
-  logic.serial.print("toggling stepper motor...%s", CRLF);
-  // TODO: fix
-  // logic.stepmotor._enabled = !logic.stepmotor._enabled;
-  
-  logic.status();
-}
-
 void audio(int) {
   logic.serial.print("playing solve audio...%s", CRLF);
   logic.audio.playTone();
@@ -91,7 +83,6 @@ void setup() {
   logic.serial.registerCommand(SerialCommand("reset",          'a', &resetHands,      "reset",          "reset the hands to the starting positions"));
   logic.serial.registerCommand(SerialCommand("minute",         'm', &minuteIncrement, "minute",         "increment minute count as an override"));
   logic.serial.registerCommand(SerialCommand("minDec",         'i', &minuteDec,       "minDec",         "decrement minute count as an override"));
-  logic.serial.registerCommand(SerialCommand("motor",          't', &motorToggle,     "motor",          "toggle the motor enabled"));
   logic.serial.registerCommand(SerialCommand("reboot",         'r', &reboot,          "reboot",         "software reboot the device"));
   logic.serial.registerCommand(SerialCommand("audio",          'z', &audio,           "audio",          "play the solve audio"));
 

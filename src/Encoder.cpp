@@ -50,6 +50,5 @@ void Encoder::handle() {
     }
     lastEnc = millis();
   }
-
 }
 
