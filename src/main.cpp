@@ -29,6 +29,8 @@ void toggleEncoder(int) {
   logic.serial.print("toggling encoder disabling of readings...%s", CRLF);
   logic.hour.pause();
   logic.minute.pause();
+
+  logic.status();
 }
 
 void hourIncrement(int) {
