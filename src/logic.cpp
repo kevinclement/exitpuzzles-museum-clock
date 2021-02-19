@@ -89,31 +89,34 @@ void Logic::handle() {
   //   since that won't be a 'fall' event.  It will then move the hands
   //   and watch for it to fall again.
   if (rightSensor.sensor.fell()) {
-    // TODO: status
     serial.print("RIGHT: IR turned on\r\n");
 
     if (minuteMotor.state == RESETTING) {
       minuteMotor.state = FOUND_SENSOR;
       minuteMotor.move(-124);
     }
+
+    status();
   }
   else if (rightSensor.sensor.rose()) {
     serial.print("RIGHT: IR turned off\r\n");
+    status();
   }
 
   if (leftSensor.sensor.fell()) {
-    // TODO: status
     serial.print("LEFT: IR turned on\r\n");
 
     if (hourMotor.state == RESETTING) {
       hourMotor.state = FOUND_SENSOR;
       hourMotor.move(124);
-    }  
+    }
+
+    status();
   } 
   else if (leftSensor.sensor.rose()) {
     serial.print("LEFT: IR turned off\r\n");
+    status();
   }
-
   // ####################################################
 
   // ## MOTORS ##########################################
@@ -144,14 +147,32 @@ void Logic::handle() {
 
   hourMotor.handle();
   minuteMotor.handle();
+
+  
+  if (_hourMotorPos != hourMotor.position) {
+    _hourMotorPos = hourMotor.position;
+
+    // Update the status once motor is done moving
+    if (hourMotor.distanceToGo() == 0) {
+      status();
+    }
+  }
+  if (_minMotorPos != minuteMotor.position) {
+    _minMotorPos = minuteMotor.position;
+
+    // Update the status once motor is done moving
+    //   NOTE: might want to remove this check to get most current values
+    //   don't know if that is too excessive though
+    if (minuteMotor.distanceToGo() == 0) {
+      status();
+    }
+  }
   // ####################################################
 
   // ## Rotary Encoders #################################
 
   // TODO: should probably pauseEncoder when device is disabled
   if (_hourPos != hour.position) {
-    // stepmotor.hour_stepper = hour.position / 2;
-
     int delta = _hourPos - hour.position;
     if (delta > 0) {
       hourMotor.move(-STEP_SIZE);
@@ -162,9 +183,7 @@ void Logic::handle() {
     _hourPos = hour.position;
   }
 
-  if (_minPos != minute.position) {
-    // stepmotor.minute_stepper = minute.position / 2;
-    
+  if (_minPos != minute.position) {   
     int delta = _minPos - minute.position;
     if (delta > 0) {
       minuteMotor.move(-STEP_SIZE);
@@ -179,26 +198,24 @@ void Logic::handle() {
 
   // ## Final Solved Check ############################
   if (minuteMotor.solved && hourMotor.solved) {
-    if (solvedAt == 0) {
+    if (_solvedAt == 0) {
       serial.print("initial solve.  waiting for timeout...\r\n");
-      solvedAt = millis();
+      _solvedAt = millis();
+      status();
     }
 
-    if (!_solved && millis() - solvedAt > SOLVED_WAIT_MS) {
-        solved();
+    if (!_solved && millis() - _solvedAt > SOLVED_WAIT_MS) {
+      solved();
     } 
   } else {
-    solvedAt = 0;
+    bool statusNeeded = (_solvedAt > 0);
+    _solvedAt = 0;
+
+    if (statusNeeded) {
+      status();
+    }
   }
   // ##################################################
-  
-  //     if (!_solved && _hs && _ms) {
-  //       solved();
-  //     } else {
-  //       status();
-  //     }
-  //   }
-  // }
   
 }
 
@@ -230,9 +247,9 @@ void Logic::status() {
       minute.disabled ? "true" : "false",
       hourMotor.solved ? "true" : "false",
       minuteMotor.solved ? "true" : "false",
-      hourMotor.position,
-      minuteMotor.position,
-      _solved ? "true" : "false",
+      _hourMotorPos,
+      _minMotorPos,
+      _solvedAt>0 ? "true" : "false",
 
       CRLF);
 

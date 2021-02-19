@@ -30,7 +30,9 @@ private:
 
   int _hourPos = 0;
   int _minPos = 0;
+  long _hourMotorPos = 0;
+  long _minMotorPos = 0;
   bool _solved = false;
-  unsigned long solvedAt = 0;
+  unsigned long _solvedAt = 0;
 };
 
