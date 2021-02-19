@@ -61,7 +61,7 @@ void Logic::setup() {
 void Logic::solved() {
   serial.print("Solved!\n");
   _solved = true;
-  audio._playTone = true;
+  audio.playTone();
   magnet._enabled = false;
   status();
 }

@@ -75,8 +75,7 @@ void motorToggle(int) {
 
 void audio(int) {
   logic.serial.print("playing solve audio...%s", CRLF);
-
-  logic.audio._playTone = true;
+  logic.audio.playTone();
 }
 
 void setup() {

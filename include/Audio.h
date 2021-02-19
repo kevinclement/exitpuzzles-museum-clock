@@ -13,9 +13,8 @@ class Audio {
     Audio(Logic &logic);
     void setup();
     void handle();
-
-    bool _playTone = false;
-
+    void playTone();
+    
   private:
     Logic &_logic;
 
