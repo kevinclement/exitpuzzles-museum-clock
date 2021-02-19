@@ -75,6 +75,7 @@ long VidStepper::distanceToGo() {
   return _stepper.distanceToGo();
 }
 
+// NOTE: I used this when I was developing but its not hooked up to anything right now
 void VidStepper::status() {
   _logic.serial.print("%-8s: current: %d target: %d mod: %d pos: %d min: %d max: %d ", 
     _label,
