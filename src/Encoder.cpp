@@ -24,13 +24,8 @@ void Encoder::pause() {
 }
 
 void Encoder::clear() {
-  Serial.println("clearing internal encoder");
   encoder.clearCount();
   position = 0;
-
-  Serial.print("value now: ");
-  Serial.print(encoder.getCount());
-  Serial.println();
 }
 
 void Encoder::status() {

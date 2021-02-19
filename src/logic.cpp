@@ -143,7 +143,6 @@ void Logic::handle() {
     hourMotor.state = GAMEON;
     minuteMotor.state = GAMEON;
 
-    Serial.println("resetting internal state");
     // reset internal state 
     _hourPos = _minPos = _hourMotorPos = _minMotorPos = _solvedAt = 0;    
     _solved = false;
