@@ -29,15 +29,16 @@ class VidStepper {
     void reset();
 
     long distanceToGo();
-    long abs();
     void status();
 
     motorState state;
     bool solved = false;
+    long position = 0;
 
   private:
     Logic &_logic;
     AccelStepper _stepper;
+    void calcPosition();
     float _solveMin = 0;
     float _solveMax = 0;
     const char * _label;

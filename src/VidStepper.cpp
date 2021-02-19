@@ -22,6 +22,7 @@ void VidStepper::setup(const char * label, float maxSpeed, float solve) {
 
 void VidStepper::handle() {
   _stepper.runSpeedToPosition();
+  calcPosition();
 
   if (state == FOUND_SENSOR && distanceToGo() == 0) {
     state = RESET;
@@ -33,8 +34,7 @@ void VidStepper::handle() {
   }
 
   if (state == GAMEON && distanceToGo() == 0) {
-    float pos = abs();
-    if (pos >= _solveMin && pos <= _solveMax) {
+    if (position >= _solveMin && position <= _solveMax) {
       if (!solved) {
         _logic.serial.print("!! %s: SOLVED !!\r\n", _label);
       }
@@ -45,15 +45,13 @@ void VidStepper::handle() {
   } 
 }
 
-long VidStepper::abs() {
+void VidStepper::calcPosition() {
   // always report the position in absolute positive number
-  long abs = _stepper.currentPosition() % NUM_STEPS;
-  if (abs < 0) {
+  position = _stepper.currentPosition() % NUM_STEPS;
+  if (position < 0) {
     // looks weird, but + is because number is already negative
-    abs = NUM_STEPS + abs;
+    position = NUM_STEPS + position;
   }
-
-  return abs;
 }
 
 void VidStepper::move(long relative) {
@@ -76,12 +74,12 @@ long VidStepper::distanceToGo() {
 }
 
 void VidStepper::status() {
-  _logic.serial.print("%-8s: current: %d target: %d mod: %d abs: %d min: %d max: %d ", 
+  _logic.serial.print("%-8s: current: %d target: %d mod: %d pos: %d min: %d max: %d ", 
     _label,
     _stepper.currentPosition(),
     _stepper.targetPosition(),
     _stepper.currentPosition() % NUM_STEPS,
-    abs(),
+    position,
     _solveMin,
     _solveMax
   );

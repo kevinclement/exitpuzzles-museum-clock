@@ -64,6 +64,9 @@ void Logic::solved() {
   audio.playTone();
   magnet._enabled = false;
   status();
+
+  // add small delay here so it doesn't open exactly when audio plays
+  delay(200);
 }
 
 void Logic::resetHands() {
@@ -99,7 +102,7 @@ void Logic::handle() {
   }
 
   if (leftSensor.sensor.fell()) {
-    // TODO: better and status
+    // TODO: status
     serial.print("LEFT: IR turned on\r\n");
 
     if (hourMotor.state == RESETTING) {
@@ -213,7 +216,8 @@ void Logic::status() {
       "encDisabled:%s,"
       "hs:%s,"
       "ms:%s,"
-      "stepper:%s,"
+      "hourMotor:%ld,"
+      "minuteMotor:%ld,"
       "solved:%s"
 
       "%s"
@@ -224,13 +228,13 @@ void Logic::status() {
       hour.encoder.getCount(),
       minute.encoder.getCount(),
       minute.disabled ? "true" : "false",
-      _hs ? "true" : "false",
-      _ms ? "true" : "false",
-      true ? "true" : "false",
+      hourMotor.solved ? "true" : "false",
+      minuteMotor.solved ? "true" : "false",
+      hourMotor.position,
+      minuteMotor.position,
       _solved ? "true" : "false",
 
       CRLF);
 
-  // TODO: proper stepper enabled
   serial.print(cMsg);
 }

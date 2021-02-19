@@ -30,8 +30,6 @@ private:
 
   int _hourPos = 0;
   int _minPos = 0;
-  bool _hs = false;
-  bool _ms = false;
   bool _solved = false;
   unsigned long solvedAt = 0;
 };

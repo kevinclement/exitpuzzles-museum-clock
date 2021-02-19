@@ -23,7 +23,6 @@ void debug(int) {
   logic.serial.print("toggling encoder debugging...%s", CRLF);
   logic.hour.debug = !logic.hour.debug;
   logic.minute.debug = !logic.minute.debug;
-  //logic.hourSensor.debug = !logic.hourSensor.debug;
 }
 
 void disableEncoder(int) {
