@@ -201,19 +201,13 @@ void Logic::handle() {
     if (_solvedAt == 0) {
       serial.print("initial solve.  waiting for timeout...\r\n");
       _solvedAt = millis();
-      status();
     }
 
     if (!_solved && millis() - _solvedAt > SOLVED_WAIT_MS) {
       solved();
     } 
   } else {
-    bool statusNeeded = (_solvedAt > 0);
     _solvedAt = 0;
-
-    if (statusNeeded) {
-      status();
-    }
   }
   // ##################################################
   
@@ -249,7 +243,7 @@ void Logic::status() {
       minuteMotor.solved ? "true" : "false",
       _hourMotorPos,
       _minMotorPos,
-      _solvedAt>0 ? "true" : "false",
+      _solved ? "true" : "false",
 
       CRLF);
 
