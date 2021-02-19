@@ -70,6 +70,7 @@ void Logic::solved() {
 }
 
 void Logic::resetHands() {
+  minuteMotor.state = IDLE;
   hourMotor.reset();
 }
 
@@ -142,12 +143,18 @@ void Logic::handle() {
     hourMotor.state = GAMEON;
     minuteMotor.state = GAMEON;
 
-    // TODO: reset encoder
+    Serial.println("resetting internal state");
+    // reset internal state 
+    _hourPos = _minPos = _hourMotorPos = _minMotorPos = _solvedAt = 0;    
+    _solved = false;
+
+    // reset encoder internal state
+    hour.clear();
+    minute.clear();
   }
 
   hourMotor.handle();
   minuteMotor.handle();
-
   
   if (_hourMotorPos != hourMotor.position) {
     _hourMotorPos = hourMotor.position;
@@ -170,8 +177,6 @@ void Logic::handle() {
   // ####################################################
 
   // ## Rotary Encoders #################################
-
-  // TODO: should probably pauseEncoder when device is disabled
   if (_hourPos != hour.position) {
     int delta = _hourPos - hour.position;
     if (delta > 0) {

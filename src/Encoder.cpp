@@ -23,12 +23,18 @@ void Encoder::pause() {
   }
 }
 
-void Encoder::setValue(int pos) {
-  position = pos;
+void Encoder::clear() {
+  Serial.println("clearing internal encoder");
+  encoder.clearCount();
+  position = 0;
+
+  Serial.print("value now: ");
+  Serial.print(encoder.getCount());
+  Serial.println();
 }
 
 void Encoder::status() {
-  _logic.serial.print("%-8s: sensor: %d\r\n", _label, curPos);
+  _logic.serial.print("%-8s: sensor: %d\r\n", _label, position);
 }
 
 void Encoder::handle() {
@@ -40,13 +46,12 @@ void Encoder::handle() {
   int newPos = encoder.getCount();
   
   if (debug) {
-    _logic.serial.print("%-8s: new: %d cur: %d\r\n", _label, newPos, curPos);
+    _logic.serial.print("%-8s: new: %d cur: %d\r\n", _label, newPos, position);
   }
 
   if (millis() - lastEnc > ENCODER_DEBOUNCE) {
-    if (newPos != curPos) {
-      setValue(newPos);
-      curPos = newPos;
+    if (newPos != position) {
+      position = newPos;
     }
     lastEnc = millis();
   }

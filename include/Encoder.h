@@ -11,6 +11,7 @@ class Encoder {
     void setup(const char * label, int PIN1, int PIN2);
     void handle();
     void pause();
+    void clear();
     void status();
 
     bool disabled = false;
@@ -21,8 +22,5 @@ class Encoder {
   private:
     Logic &_logic;
     const char * _label;
-    int curPos = 0;
     unsigned long lastEnc  = millis();
-
-    void setValue(int);
 };
