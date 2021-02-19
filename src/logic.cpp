@@ -45,7 +45,7 @@ void Logic::setup() {
 
   // vidstepper
   hourMotor.setup("HOUR", 800, 535);
-  minuteMotor.setup("MINUTE", 1200, 180);
+  minuteMotor.setup("MINUTE", 1200, 170);
   
   // magnet
   magnet.setup();
@@ -94,7 +94,7 @@ void Logic::handle() {
 
     if (minuteMotor.state == RESETTING) {
       minuteMotor.state = FOUND_SENSOR;
-      minuteMotor.move(-124);
+      minuteMotor.move(-114);
     }
 
     status();
