@@ -174,8 +174,10 @@ void Logic::handle() {
     minute.clear();
 
     status();
-  }
 
+    // move minute hand a bit so its not totally overlapped to start
+    minute.encoder.setCount(10);
+  }
   // ####################################################
 
   // ## Rotary Encoders #################################
@@ -200,7 +202,6 @@ void Logic::handle() {
 
     _minPos = minute.position;
   }
-
   // ##################################################
 
   // ## Final Solved Check ############################
