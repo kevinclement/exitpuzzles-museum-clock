@@ -45,7 +45,7 @@ void Logic::setup() {
 
   // vidstepper
   hourMotor.setup("HOUR", 800, 535);
-  minuteMotor.setup("MINUTE", 1200, 170);
+  minuteMotor.setup("MINUTE", 1200, 180);
   
   // magnet
   magnet.setup();
@@ -94,7 +94,7 @@ void Logic::handle() {
 
     if (minuteMotor.state == RESETTING) {
       minuteMotor.state = FOUND_SENSOR;
-      minuteMotor.move(-114);
+      minuteMotor.move(-124);
     }
 
     status();
@@ -139,19 +139,6 @@ void Logic::handle() {
     hourMotor.reset();
   }
 
-  if (hourMotor.state == RESET && minuteMotor.state == RESET) {
-    hourMotor.state = GAMEON;
-    minuteMotor.state = GAMEON;
-
-    // reset internal state 
-    _hourPos = _minPos = _hourMotorPos = _minMotorPos = _solvedAt = 0;    
-    _solved = false;
-
-    // reset encoder internal state
-    hour.clear();
-    minute.clear();
-  }
-
   hourMotor.handle();
   minuteMotor.handle();
   
@@ -173,6 +160,22 @@ void Logic::handle() {
       status();
     }
   }
+
+  if (hourMotor.state == RESET && minuteMotor.state == RESET) {
+    hourMotor.state = GAMEON;
+    minuteMotor.state = GAMEON;
+
+    // reset internal state 
+    _hourPos = _minPos = _hourMotorPos = _minMotorPos = _solvedAt = 0;    
+    _solved = false;
+
+    // reset encoder internal state
+    hour.clear();
+    minute.clear();
+
+    status();
+  }
+
   // ####################################################
 
   // ## Rotary Encoders #################################
