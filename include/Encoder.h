@@ -7,7 +7,7 @@ class Logic;
 
 class Encoder {
   public:
-    Encoder(Logic &logic);
+    Encoder(Logic &logic, ESP32Encoder enc);
     void setup(const char * label, int PIN1, int PIN2);
     void handle();
     void pause();

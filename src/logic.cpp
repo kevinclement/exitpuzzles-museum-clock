@@ -22,12 +22,15 @@
 
 #define SOLVED_WAIT_MS 2500
 
+static IRAM_ATTR void enc_cb(void* arg) {
+}
+
 Logic::Logic() 
   : serial(),
     hourMotor(*this, AccelStepper(AccelStepper::FULL4WIRE, HOUR_MTR_PIN1, HOUR_MTR_PIN2, HOUR_MTR_PIN3, HOUR_MTR_PIN4)),
     minuteMotor(*this, AccelStepper(AccelStepper::FULL4WIRE, MIN_MTR_PIN1, MIN_MTR_PIN2, MIN_MTR_PIN3, MIN_MTR_PIN4)),
-    hour(*this),
-    minute(*this),
+    hour(*this, ESP32Encoder(true, enc_cb)),
+    minute(*this, ESP32Encoder()),
     magnet(*this),
     leftSensor(*this, PIN_SENSOR_LEFT, "LEFT"),
     rightSensor(*this, PIN_SENSOR_RIGHT, "RIGHT"),
@@ -230,8 +233,8 @@ void Logic::status() {
       "gitDate:%s,"
       "buildDate:%s,"
 
-      "encHour:%d,"
-      "encMinute:%d,"
+      "encHour:%s,"
+      "encMinute:%s,"
       "encoder:%s,"
       "hs:%s,"
       "ms:%s,"
@@ -244,8 +247,8 @@ void Logic::status() {
       GIT_DATE,
       DATE_NOW,
 
-      hour.encoder.getCount(),
-      minute.encoder.getCount(),
+      String((int32_t)hour.encoder.getCount()),
+      String((int32_t)minute.encoder.getCount()),
       minute.disabled ? "false" : "true",
       hourMotor.solved ? "true" : "false",
       minuteMotor.solved ? "true" : "false",
@@ -253,7 +256,7 @@ void Logic::status() {
       _minMotorPos,
       _solved ? "true" : "false",
 
-      CRLF);
-
+    CRLF);
+  
   serial.print(cMsg);
 }

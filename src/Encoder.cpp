@@ -4,14 +4,23 @@
 
 #define ENCODER_DEBOUNCE  50
 
-Encoder::Encoder(Logic &logic)
-: _logic(logic)
+Encoder::Encoder(Logic &logic, ESP32Encoder enc)
+: _logic(logic), 
+  encoder(enc)
 {
 }
 
 void Encoder::setup(const char * label, int PIN1, int PIN2) {
   _label = label;
-  encoder.attachHalfQuad(PIN1, PIN2);
+
+  if (encoder.always_interrupt) {
+    encoder.attachSingleEdge(PIN1, PIN2);
+    encoder.setFilter(1023);
+  } else {
+    encoder.attachHalfQuad(PIN1, PIN2);
+  }
+  
+  encoder.clearCount();
 }
 
 void Encoder::pause() {
