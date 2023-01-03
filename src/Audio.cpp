@@ -7,6 +7,7 @@ Audio::Audio(Logic &logic)
 }
 
 void Audio::setup() {
+    ledcSetup(BUZZER_CHANNEL, 8000, 12);
 }
 
 void Audio::handle() {
