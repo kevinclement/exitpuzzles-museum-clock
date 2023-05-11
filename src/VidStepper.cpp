@@ -2,6 +2,8 @@
 #include "VidStepper.h"
 #include "logic.h"
 
+#define MTR_SPEED 300
+
 VidStepper::VidStepper(Logic &logic, AccelStepper stepper)
 : _logic(logic), 
   _stepper(stepper)
@@ -9,7 +11,7 @@ VidStepper::VidStepper(Logic &logic, AccelStepper stepper)
 }
  
 void VidStepper::setup(const char * label, float maxSpeed, float solve) {
-  _stepper.setSpeed(300);  
+  _stepper.setSpeed(MTR_SPEED);  
   _stepper.setMaxSpeed(maxSpeed);
 
   // setup solve boundaries to provide some wiggle room
@@ -58,7 +60,7 @@ void VidStepper::calcPosition() {
 
 void VidStepper::move(long relative) {
   _stepper.move(relative);
-  _stepper.setSpeed(300);
+  _stepper.setSpeed(MTR_SPEED);
 }
 
 void VidStepper::nudge() {
