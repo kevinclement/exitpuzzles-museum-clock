@@ -19,11 +19,14 @@ public:
   IRSensor leftSensor;
   IRSensor rightSensor;
   Audio audio;
-
+  bool _resetDisabled = false;
+  
   void setup();
   void handle();
   void solved();
   void status();
+  void resetMinute();
+  void resetHour();
   void resetHands();
 
 private:

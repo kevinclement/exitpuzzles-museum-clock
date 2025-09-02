@@ -58,7 +58,9 @@ void Logic::setup() {
   rightSensor.setup();
 
   // reset motor positions, start with hour hand
-  hourMotor.reset();
+  if (!_resetDisabled) {
+    resetHour();
+  }
 }
 
 void Logic::solved() {
@@ -72,8 +74,12 @@ void Logic::solved() {
   delay(200);
 }
 
-void Logic::resetHands() {
-  minuteMotor.state = IDLE;
+void Logic::resetMinute() {
+  minuteMotor.reset();
+  // minuteMotor.state = IDLE;
+}
+
+void Logic::resetHour() {
   hourMotor.reset();
 }
 
@@ -95,9 +101,16 @@ void Logic::handle() {
   if (rightSensor.sensor.fell()) {
     serial.print("RIGHT: IR turned on\r\n");
 
+    if (hourMotor.state == RESETTING) {
+      serial.print("Found right sensor while resetting HOUR, moving to start position.\r\n");
+      hourMotor.state = FOUND_SENSOR;
+      hourMotor.move(-128);
+    }
+
     if (minuteMotor.state == RESETTING) {
+      serial.print("Found sensor for minute while resetting, moving to start position.\r\n");
       minuteMotor.state = FOUND_SENSOR;
-      minuteMotor.move(-124);
+      minuteMotor.move(-126);
     }
 
     status();
@@ -107,23 +120,27 @@ void Logic::handle() {
     status();
   }
 
-  if (leftSensor.sensor.fell()) {
-    serial.print("LEFT: IR turned on\r\n");
+  // left is used for hour reset
+  // if (leftSensor.sensor.fell()) {
+  //   serial.print("LEFT: IR turned on\r\n");
 
-    if (hourMotor.state == RESETTING) {
-      hourMotor.state = FOUND_SENSOR;
-      hourMotor.move(124);
-    }
+  //   // hour was found, move to start
+  //   if (hourMotor.state == RESETTING) {
+  //     serial.print("Found sensor for hour while resetting, moving to start position.\r\n");
+  //     hourMotor.state = FOUND_SENSOR;
+  //     hourMotor.move(124);
+  //   }
 
-    status();
-  } 
-  else if (leftSensor.sensor.rose()) {
-    serial.print("LEFT: IR turned off\r\n");
-    status();
-  }
+  //   status();
+  // } 
+  // else if (leftSensor.sensor.rose()) {
+  //   serial.print("LEFT: IR turned off\r\n");
+  //   status();
+  // }
   // ####################################################
 
   // ## MOTORS ##########################################
+  // hour hand reset lets reset minute now
   if (hourMotor.state == RESET && minuteMotor.state == IDLE) {
     minuteMotor.reset();
   }
@@ -164,10 +181,12 @@ void Logic::handle() {
     }
   }
 
+  // onece both hands are reset we can start game
   if (hourMotor.state == RESET && minuteMotor.state == RESET) {
     hourMotor.state = GAMEON;
     minuteMotor.state = GAMEON;
 
+    serial.print("both hands reset, ready to play. resetting internal state and encoders\r\n");
     // reset internal state 
     _hourPos = _minPos = _hourMotorPos = _minMotorPos = _solvedAt = 0;    
     _solved = false;
@@ -179,7 +198,7 @@ void Logic::handle() {
     status();
 
     // move minute hand a bit so its not totally overlapped to start
-    minute.encoder.setCount(10);
+    // minute.encoder.setCount(10);
   }
   // ####################################################
 

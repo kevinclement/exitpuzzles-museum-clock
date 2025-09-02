@@ -27,6 +27,8 @@ void VidStepper::handle() {
   calcPosition();
 
   if (state == FOUND_SENSOR && distanceToGo() == 0) {
+     _logic.serial.print("%s RESET. setting current pos to 0!\r\n", _label);
+
     state = RESET;
     _stepper.setCurrentPosition(0);
   }
